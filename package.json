@@ -1,0 +1,15 @@
+
+{
+  "name": "lms-functions",
+  "version": "2.0.0",
+  "description": "Azure functions to handle message type of user from canvas-ref and import into canvas",
+  "main": "index.js",
+  "scripts": {
+
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+  }
+  }
+

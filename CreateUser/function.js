@@ -2,7 +2,7 @@
     {
         "bindings": [
           {
-            "name": "mySbMsg",
+            "name": "msg",
             "type": "serviceBusTrigger",
             "direction": "in",
             "topicName": "ug-infoclass-2",
