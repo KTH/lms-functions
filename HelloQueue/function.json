@@ -3,9 +3,11 @@
   "bindings": [
     {
       "name": "myQueueItem",
-      "type": "queueTrigger",
+      "type": "serviceBusTrigger",
       "direction": "in",
-      "queueName": "js-queue-items"
+      "topicName": "%HelloQueue_TopicName%",
+      "subscriptionName": "%HelloQueue_SubscriptionName%",
+      "connection": "HelloQueue_ConnectionString"
     }
   ]
 }
