@@ -1,15 +1,14 @@
-
 {
-    "bindings": [
-      {
-        "name": "msg",
-        "type": "serviceBusTrigger",
-        "direction": "in",
-        "topicName": "ug-infoclass-2",
-        "subscriptionName": "canvas-ref",
-        "connection": "kth-integral_RootManageSharedAccessKey_SERVICEBUS",
-        "accessRights": "Listen"
-      }
-    ]
-    "disabled": false
-  }
+  "bindings": [
+    {
+      "name": "msg",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "topicName": "ug-infoclass-2",
+      "subscriptionName": "canvas-ref",
+      "connection": "CreateUser_ConnectionString",
+      "accessRights": "Listen"
+    }
+  ]
+  "disabled": false
+}
