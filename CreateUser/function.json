@@ -4,11 +4,10 @@
       "name": "msg",
       "type": "serviceBusTrigger",
       "direction": "in",
-      "topicName": "ug-infoclass-2",
-      "subscriptionName": "canvas-ref",
-      "connection": "CreateUser_ConnectionString",
-      "accessRights": "Listen"
+      "topicName": "%CreateUser_TopicName%",
+      "subscriptionName": "%CreateUser_SubscriptionName%",
+      "connection": "CreateUser_ConnectionString"
     }
-  ]
+  ],
   "disabled": false
 }
