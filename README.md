@@ -2,7 +2,7 @@
 
 Azure Functions examples.
 
-## Run in local
+## Run in local
 
 1. **Download the software**
 

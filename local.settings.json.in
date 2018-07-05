@@ -1,5 +1,5 @@
 {
-  "IsEncripted": false,
+  "IsEncrypted": false,
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME: "node",
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
@@ -8,6 +8,8 @@
     "HelloQueue_SubscriptionName": "Place here the name of the topic subscription for the HelloQueue function",
     "CreateUser_ConnectionString": "Place here the connection string for the CreateUser function",
     "CreateUser_TopicName": "",
-    "CreateUser_SubscriptionName": ""
+    "CreateUser_SubscriptionName": "",
+    "CanvasApiUrl": "https://kth.test.instructure.com/api/v1",
+    "CanvasApiKey": "8779~"
   }
 }

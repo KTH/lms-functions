@@ -1,15 +1,13 @@
-
 {
   "name": "lms-functions",
   "version": "1.0.0",
   "description": "Azure functions to handle message type of user from canvas-ref and import into canvas",
   "main": "index.js",
-  "scripts": {
-
-  },
+  "scripts": {},
   "author": "",
   "license": "",
   "dependencies": {
+    "kth-canvas-api": "^0.15.5",
+    "kth-message-type": "^1.9.0"
   }
-  }
-
+}
