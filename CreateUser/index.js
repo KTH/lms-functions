@@ -56,14 +56,17 @@ async function createOrUpdate (user) {
 }
 
 module.exports = async function(context, msg) {
+  if (msg) {
+    context.log('JavaScript ServiceBus topic trigger function processed message:', msg)
+
     if (msg.ugClass==='user') {
-        const user = convertToCanvasUser(msg)
-        context.log('JavaScript ServiceBus topic trigger function processed message:', msg)
-        if (isInScope(msg) && user) {
-            await createOrUpdate(user)
-            context.log("User were created or updated", user)
-        }
+      const user = convertToCanvasUser(msg)
+      if (isInScope(msg) && user) {
+        await createOrUpdate(user)
+        context.log("User were created or updated", user)
+      }
     }
     else context.log('Message is not user type but other...', msg.ugClass)
-    context.done()
+  }
+  context.done()
 }
