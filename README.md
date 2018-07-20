@@ -24,7 +24,7 @@ Azure Functions examples.
    ```
 
 ## Create and run it in Azure Portal
-1)Create functions app for async/await Nodejs 8.9.4. Use right azure prenumeration för be able to reach queue you need.
+1) Create functions app for async/await Nodejs 8.9.4. Use right azure prenumeration för be able to reach queue you need.
 Go to "Programinställningar" and change these parameters to:
 FUNCTIONS_EXTENSION_VERSION: ~2
 WEBSITE_NODE_DEFAULT_VERSION: 8.9.4
