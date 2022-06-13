@@ -21,7 +21,7 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "@kth/canvas-api": "^4.2.0",
+    "@kth/canvas-api": "^4.2.2",
     "fast-xml-parser": "^4.0.4",
     "ldapts": "^3.2.2"
   }

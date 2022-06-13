@@ -6,7 +6,7 @@
       "direction": "in",
       "topicName": "ladok-lis",
       "subscriptionName": "%SERVICE_BUS_SUBSCRIPTION_NAME%",
-      "connection": "FUNCTIONS_WORKER_RUNTIME"
+      "connection": "SERVICE_BUS_CONNECTION_STRING"
     }
   ],
   "scriptFile": "../dist/EnrollRegisteredStudent/index.js"
