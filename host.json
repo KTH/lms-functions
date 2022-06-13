@@ -1,5 +1,0 @@
-{
-  "serviceBus": {
-    "autoRenewTimeout": "00:00:10"
-  }
-}
