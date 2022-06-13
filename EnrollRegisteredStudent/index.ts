@@ -2,14 +2,37 @@ import { AzureFunction, Context } from "@azure/functions";
 import { XMLParser } from "fast-xml-parser";
 import { createCourseEnrollment } from "./canvasApi";
 
+function ladokExtensionFieldMatch(extensionArr, matchObj: object) : boolean {
+  for (let key of Object.keys(matchObj)) {
+    const field = extensionArr?.["ns0:extensionField"].reduce((curr, next) => curr || (next["ns0:fieldName"] === key ? next : undefined), undefined);
+    if (field["ns0:fieldValue"] !== matchObj[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function isRegistration(jsonObject: any): boolean {
   const membershipIdType =
     jsonObject?.["ns0:membershipRecord"]?.["ns0:membership"]?.[
-      "ns0:membershipIdType"
+    "ns0:membershipIdType"
     ];
+  if (membershipIdType !== "courseOffering") return false;
 
-  // TODO: Check more properties in the XML file
-  return membershipIdType === "courseOffering";
+  const status = jsonObject?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
+  if (status !== "Active") return false;
+
+  return ladokExtensionFieldMatch(
+    jsonObject?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
+    {
+      Admitted: true,
+      Registered: true,
+      Break: false,
+      Dropout: false,
+      OriginEvent: "LADOK.AddRegistration"
+    }
+  );
 }
 
 const serviceBusTopicTrigger: AzureFunction = async function (
@@ -25,11 +48,11 @@ const serviceBusTopicTrigger: AzureFunction = async function (
 
   // prettier-ignore
   const courseRoundId =
-      jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:collectionSourcedId"];
+    jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:collectionSourcedId"];
 
   // prettier-ignore
   const studentId =
-      jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:member"]?.["ns0:personSourcedId"];
+    jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:member"]?.["ns0:personSourcedId"];
 
   if (!courseRoundId || !studentId) {
     context.log(
