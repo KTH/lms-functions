@@ -2,9 +2,9 @@ import { AzureFunction, Context } from "@azure/functions";
 import { XMLParser } from "fast-xml-parser";
 import { createCourseEnrollment } from "./canvasApi";
 
-function ladokExtensionFieldMatch(extensionArr, matchObj: object) : boolean {
+function ladokExtensionFieldMatch(extensionArr, matchObj: object): boolean {
   for (let key of Object.keys(matchObj)) {
-    const field = extensionArr?.["ns0:extensionField"].reduce((curr, next) => curr || (next["ns0:fieldName"] === key ? next : undefined), undefined);
+    const field = extensionArr?.["ns0:extensionField"].find(el => el["ns0:fieldName"] === key);
     if (field["ns0:fieldValue"] !== matchObj[key]) {
       return false;
     }
@@ -13,18 +13,19 @@ function ladokExtensionFieldMatch(extensionArr, matchObj: object) : boolean {
   return true;
 }
 
-function isRegistration(jsonObject: any): boolean {
-  const membershipIdType =
-    jsonObject?.["ns0:membershipRecord"]?.["ns0:membership"]?.[
+function isRegistration(membership: any): boolean {
+  if (!membership) return false;
+
+  const membershipIdType = membership?.[
     "ns0:membershipIdType"
-    ];
+  ];
   if (membershipIdType !== "courseOffering") return false;
 
-  const status = jsonObject?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
+  const status = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
   if (status !== "Active") return false;
 
   return ladokExtensionFieldMatch(
-    jsonObject?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
+    membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
     {
       Admitted: true,
       Registered: true,
@@ -42,17 +43,14 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   const parser = new XMLParser();
   const jsonObj = parser.parse(message);
 
-  if (!isRegistration(jsonObj)) {
-    return;
-  }
+  const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"];
 
-  // prettier-ignore
-  const courseRoundId =
-    jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:collectionSourcedId"];
+  // Guard
+  if (!isRegistration(membership)) return;
 
-  // prettier-ignore
-  const studentId =
-    jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]?.["ns0:member"]?.["ns0:personSourcedId"];
+  // Unpack values
+  const courseRoundId = membership?.["ns0:collectionSourcedId"];
+  const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
 
   if (!courseRoundId || !studentId) {
     context.log(
@@ -61,6 +59,7 @@ const serviceBusTopicTrigger: AzureFunction = async function (
     return;
   }
 
+  // Process
   await createCourseEnrollment(courseRoundId, studentId).catch((err) => {
     throw err;
   });
