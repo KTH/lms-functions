@@ -35,8 +35,26 @@ export async function createCourseEnrollment(
       }
     )
     .catch((err) => {
-      throw err;
+      const action = 'createCourseEnrollment';
+      throw new CanvasError({action, courseRoundId, studentId, err});;
     });
 
   return res.body;
+}
+
+class CanvasError extends Error {
+  studentId: string;
+  courseRoundId: string;
+  action: string;
+
+  constructor({action, courseRoundId, studentId, err}) {
+    super(err);
+    this.courseRoundId = courseRoundId;
+    this.studentId = studentId;
+    this.action = action;
+  }
+
+  toString() {
+    return `Could not execute '${this.action}' for studentId: ${this.studentId}, courseRoundId: ${this.courseRoundId} -- ${this.message}`;
+  }
 }
