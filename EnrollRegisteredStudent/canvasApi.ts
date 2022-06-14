@@ -42,13 +42,18 @@ export async function createCourseEnrollment(
   return res.body;
 }
 
-class CanvasError extends Error {
-  studentId: string;
-  courseRoundId: string;
+type TCanvasErrorParams = {
   action: string;
+  courseRoundId: string;
+  studentId: string;
+  err: Error;
+}
 
-  constructor({action, courseRoundId, studentId, err}) {
-    super(err);
-    this.message = `Could not execute '${action}' for studentId: ${studentId}, courseRoundId: ${courseRoundId} -- ${err.message}`;
+class CanvasError extends Error {
+  err: Error;
+
+  constructor({action, courseRoundId, studentId, err}: TCanvasErrorParams) {
+    super(`Could not execute '${action}' for studentId: ${studentId}, courseRoundId: ${courseRoundId} -- ${err.message}`);
+    this.err = err;
   }
 }
