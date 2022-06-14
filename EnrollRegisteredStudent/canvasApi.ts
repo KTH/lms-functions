@@ -28,7 +28,7 @@ export async function createCourseEnrollment(
       {
         enrollment: {
           user_id: `sis_integration_id:${studentId}`,
-          role_id: 3,
+          role_id: 164,
           enrollment_state: "active",
           notify: false,
         },
