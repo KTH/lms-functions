@@ -2,9 +2,9 @@ import { AzureFunction, Context } from "@azure/functions";
 import { XMLParser } from "fast-xml-parser";
 import { createCourseEnrollment } from "./canvasApi";
 
-function ladokExtensionFieldMatch(extensionArr, matchObj: object): boolean {
+function ladokExtensionFieldMatch(extension: object[], matchObj: object): boolean {
   for (let key of Object.keys(matchObj)) {
-    const field = extensionArr?.["ns0:extensionField"].find(el => el["ns0:fieldName"] === key);
+    const field = extension?.["ns0:extensionField"].find(el => el["ns0:fieldName"] === key);
     if (field["ns0:fieldValue"] !== matchObj[key]) {
       return false;
     }
