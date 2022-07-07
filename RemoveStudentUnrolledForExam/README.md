@@ -33,5 +33,4 @@
 
 3. Use the prepared Azure Functions trigger in Postman
 
-    https://lively-rocket-948078.postman.co/workspace/E-l%25C3%25A4rande~7998ca2d-3d65-4019-99fb-775e68a101b9/request/17526432-807cfb41-2028-4588-9acf-84148d7a31bf
-
+  https://go.postman.co/workspace/E-l%C3%A4rande~7998ca2d-3d65-4019-99fb-775e68a101b9/collection/17526432-e7948ce3-aa25-48cd-96b2-5e748666584d?action=share&creator=21038370

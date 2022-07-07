@@ -9,5 +9,5 @@
       "connection": "SERVICE_BUS_CONNECTION_STRING"
     }
   ],
-  "scriptFile": "../dist/RemoveUnregisteredStudent/index.js"
+  "scriptFile": "../dist/RemoveStudentUnrolledForExam/index.js"
 }
