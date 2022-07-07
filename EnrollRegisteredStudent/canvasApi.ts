@@ -12,9 +12,6 @@ if (process.env.CANVAS_API_URL) {
   throw new Error("Missing env-var CANVAS_API_URL");
 }
 
-/**
- * Get student course enrollment from Canvas.
- */
 export async function createCourseEnrollment(
   courseRoundId: string,
   studentId: string

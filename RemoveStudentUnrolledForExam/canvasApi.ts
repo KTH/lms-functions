@@ -35,7 +35,7 @@ export async function getCourseEnrollment(activityRoundId: string, kthId: string
 /**
  * Remove course enrollment of studend in Canvas.
  */
-export async function removeEnrollment(courseId: number, enrollmentId: number) : Promise<void> {
+export async function removeEnrollment(courseId: string, enrollmentId: number) : Promise<void> {
   assert(canvasApi, "Missing canvasApi");
 
   // https://github.com/instructure/canvas-lms/blob/master/app/controllers/enrollments_api_controller.rb
