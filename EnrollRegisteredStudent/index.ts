@@ -2,9 +2,14 @@ import { AzureFunction, Context } from "@azure/functions";
 import { XMLParser } from "fast-xml-parser";
 import { createCourseEnrollment } from "./canvasApi";
 
-function ladokExtensionFieldMatch(extension: object[], matchObj: object): boolean {
+function ladokExtensionFieldMatch(
+  extension: object[],
+  matchObj: object
+): boolean {
   for (let key of Object.keys(matchObj)) {
-    const field = extension?.["ns0:extensionField"].find(el => el["ns0:fieldName"] === key);
+    const field = extension?.["ns0:extensionField"].find(
+      (el) => el["ns0:fieldName"] === key
+    );
     if (field["ns0:fieldValue"] !== matchObj[key]) {
       return false;
     }
@@ -16,9 +21,7 @@ function ladokExtensionFieldMatch(extension: object[], matchObj: object): boolea
 function isRegistration(membership: any): boolean {
   if (!membership) return false;
 
-  const membershipIdType = membership?.[
-    "ns0:membershipIdType"
-  ];
+  const membershipIdType = membership?.["ns0:membershipIdType"];
   if (membershipIdType !== "courseOffering") return false;
 
   const status = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
@@ -31,7 +34,7 @@ function isRegistration(membership: any): boolean {
       Registered: true,
       Break: false,
       Dropout: false,
-      OriginEvent: "LADOK.AddRegistration"
+      OriginEvent: "LADOK.AddRegistration",
     }
   );
 }
@@ -43,10 +46,16 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   const parser = new XMLParser();
   const jsonObj = parser.parse(message);
 
+  // NOTE: This log message should be deleted if there are too many logs
+  context.log("Message is", jsonObj);
+
   const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"];
 
   // Guard
-  if (!isRegistration(membership)) return;
+  if (!isRegistration(membership)) {
+    context.log("Message is not registration. Skipping...");
+    return;
+  }
 
   // Unpack values
   const courseRoundId = membership?.["ns0:collectionSourcedId"];
