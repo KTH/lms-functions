@@ -1,4 +1,5 @@
 import { AzureFunction, Context } from "@azure/functions";
+import { CanvasApiError } from "@kth/canvas-api";
 import { XMLParser } from "fast-xml-parser";
 import { createCourseEnrollment } from "./canvasApi";
 
@@ -69,12 +70,30 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   }
 
   // Process
-  await createCourseEnrollment(courseRoundId, studentId).catch((err) => {
-    throw err;
-  });
-  // TODO: Handle errors better
+  await createCourseEnrollment(courseRoundId, studentId)
+    .catch((err) => canvasErrorHandler(context, err));
 
   context.log("ServiceBus topic trigger function processed message", message);
 };
 
 export default serviceBusTopicTrigger;
+
+function canvasErrorHandler(context: Context, err: {err?: Error}) {
+  if (err.err instanceof CanvasApiError) {
+    const errInner = err.err;
+    /**
+     * If Canvas replies Not Found, this means that either the student or
+     * the course couldn't be found. This should be fixed during nightly
+     * batch updates so we consume this message.
+     * 
+     * NOTE: We are not distinguising between student and course not
+     * found.
+     */
+    if (errInner.code == 404 /* NOT FOUND */) {
+      context.log("Canvas replied user or course not found, silently consuming");
+      return;
+    }
+  }
+
+  throw err;
+}
