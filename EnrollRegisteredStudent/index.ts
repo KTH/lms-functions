@@ -82,15 +82,16 @@ function canvasErrorHandler(context: Context, err: {err?: Error}) {
   if (err.err instanceof CanvasApiError) {
     const errInner = err.err;
     /**
-     * If Canvas replies Not Found, this means that either the student or
-     * the course couldn't be found. This should be fixed during nightly
-     * batch updates so we consume this message.
+     * If Canvas replies 404 Not Found, this means that course couldn't be found.
+     * If Canvas replise 400 Bad Request, this means that the student couldn't be found.
      * 
-     * NOTE: We are not distinguising between student and course not
-     * found.
+     * These issues should be fixed during nightly batch updates so we consume this message.
      */
     if (errInner.code == 404 /* NOT FOUND */) {
-      context.log("Canvas replied user or course not found, silently consuming");
+      context.log("Canvas replied course not found, silently consuming");
+      return;
+    } else if (errInner.code == 400 /* BAD REQUEST */) {
+      context.log("Canvas replied student not found, silently consuming");
       return;
     }
   }
