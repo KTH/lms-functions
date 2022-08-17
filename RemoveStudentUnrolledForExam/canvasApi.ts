@@ -28,7 +28,7 @@ export async function getCourseEnrollments(activityRoundId: string, studentId: s
 
     `sections/sis_section_id:${sectionId}/enrollments`,
     {
-    /*   "user_id": `sis_user_id:${studentId}`, */
+      "user_id": `sis_integration_id:${studentId}`,
       "type": ["StudentEnrollment"],
     }
   )
