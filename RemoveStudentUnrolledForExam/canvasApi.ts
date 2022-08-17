@@ -15,33 +15,50 @@ if (process.env.CANVAS_API_URL) {
 /**
  * Get student course enrollment from Canvas.
  */
-export async function getCourseEnrollment(activityRoundId: string, kthId: string) : Promise<[{id: number, course_id: number}]>{
+/* export async function getCourseEnrollments(activityRoundId: string, studentId: string) { */
+export async function getCourseEnrollments(activityRoundId: string, studentId: string) : Promise<[{id: number}]>{
   assert(canvasApi, "Missing canvasApi");
   // https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
   // kthId is called sis_user_id in KTH Canvas
   // We need id of enrollment for the current use case so I passing it to the generic
-  const res = await canvasApi.get<[{ id: number, course_id: number }]>(
-    `sections/sis_section_id:AKT.${activityRoundId}/enrollments`,
+  let getEnrollments = async (sectionId: string): Promise<[{id:number}]>=>{
+
+    console.log(`sections/sis_section_id:${sectionId}/enrollments`)
+    let res = await canvasApi.get<[{id:number}]>(
+
+    `sections/sis_section_id:${sectionId}/enrollments`,
     {
-      "user_id": `sis_user_id:${kthId}`,
+    /*   "user_id": `sis_user_id:${studentId}`, */
       "type": ["StudentEnrollment"],
     }
-  ).catch((err) => { throw err });
+  )
+  return res.body;
+  }
+
   // TODO: Handle errors better
 
-  return res.body;
+  /* return [ */
+    return getEnrollments(`AKT.${activityRoundId}`)//, 
+    /* await getEnrollment(`AKT.${activityRoundId}.FUNKA`)] */ 
 }
 
 /**
  * Remove course enrollment of studend in Canvas.
  */
-export async function removeEnrollment(courseId: string, enrollmentId: number) : Promise<void> {
+export async function removeEnrollment(courseId: string, studentId: string) : Promise<void> {
   assert(canvasApi, "Missing canvasApi");
 
-  // https://github.com/instructure/canvas-lms/blob/master/app/controllers/enrollments_api_controller.rb
-  const res = await canvasApi.request(
-    `courses/${courseId}/enrollments/${enrollmentId}?task=delete`,
-    "DELETE",
-  ).catch((err) => { throw err });
+const enrollments = await getCourseEnrollments(courseId, studentId)
+console.log(enrollments)
+
+/* const enrollments1 = await canvasApi.listItems(`courses/sis_course_id:${courseId}/enrollments`).toArray(); */
+/* const enrollments2 = await canvasApi.listItems(`courses/sis_course_id:${courseId}/enrollments`).toArray(); */
+/* const usersEnrollments = [...enrollments1, enrollments2].filter(enrollment => enrollment.user?.integration_id ===studentId) */
+/* console.log(usersEnrollments) */
+// Now `courses` is an iterator that goes through every course
+  /* const res = await canvasApi.request( */
+  /*   `courses/${courseId}/enrollments/${studentId}?task=delete`, */
+  /*   "DELETE", */
+  /* ).catch((err) => { throw err }); */
   // TODO: Handle errors better
 }

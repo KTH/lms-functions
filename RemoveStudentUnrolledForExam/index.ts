@@ -4,7 +4,6 @@ import { getKthId } from "./ug";
 import { removeEnrollment } from "./canvasApi";
 
 const serviceBusTopicTrigger: AzureFunction = async function(context: Context, message: string): Promise<void> {
-    // context.log('ServiceBus topic trigger function processed message', mySbMsg);
 
     // 1. Parse incomming mesage
     const parser = new XMLParser();
@@ -19,16 +18,8 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
         return;
     }
 
-    const sectionSisIds = [
-        `AKT.${activityRoundId}`, 
-        `AKT.${activityRoundId}.FUNKA`
-    ]
     context.log(`Got message about student ${studentId} unrolled from exam ${activityRoundId}`)
-    for await (const sectionSisId of sectionSisIds) {
-        const result = await removeEnrollment(sectionSisId, studentId).catch(err => {throw err})
-        // TODO: Handle errors better
-        context.log(result)
-    }
+    const result = await removeEnrollment(activityRoundId, studentId).catch(err => {throw err})
     context.log(`Removed enrollment of user ${studentId} from exam ${activityRoundId}`);
 };
 
