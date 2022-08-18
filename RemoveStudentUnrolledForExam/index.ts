@@ -1,6 +1,5 @@
 import { AzureFunction, Context } from "@azure/functions"
 import { XMLParser } from "fast-xml-parser";
-import { getKthId } from "./ug";
 import { removeEnrollment } from "./canvasApi";
 
 const serviceBusTopicTrigger: AzureFunction = async function(context: Context, message: string): Promise<void> {
