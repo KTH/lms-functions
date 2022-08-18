@@ -18,7 +18,7 @@ type Enrollment = {id:number}
  * Get student course enrollment from Canvas.
  */
 /* export async function getCourseEnrollments(activityRoundId: string, studentId: string) { */
-export async function getCourseEnrollments(activityRoundId: string, studentId: string) : Promise<[Enrollment]>{
+export async function getCourseEnrollments(activityRoundId: string, studentId: string) : Promise<Enrollment[]>{
   assert(canvasApi, "Missing canvasApi");
   // https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
   // kthId is called sis_user_id in KTH Canvas
@@ -41,11 +41,8 @@ export async function getCourseEnrollments(activityRoundId: string, studentId: s
 
   return [
     ... await getEnrollments(`AKT.${activityRoundId}`),
-    /* ... await getEnrollments(`AKT.${activityRoundId}.FUNKA`) */
-
+    ... await getEnrollments(`AKT.${activityRoundId}.FUNKA`)
   ]
-  //, 
-  /* await getEnrollment(`AKT.${activityRoundId}.FUNKA`)] */ 
 }
 
 /**
