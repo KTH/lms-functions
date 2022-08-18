@@ -1,4 +1,5 @@
 import CanvasApi from "@kth/canvas-api";
+import { Context } from "@azure/functions"
 import assert from "assert";
 
 let canvasApi: CanvasApi;
@@ -12,7 +13,7 @@ if (process.env.CANVAS_API_URL) {
   throw(new Error("Missing env-var CANVAS_API_URL"));
 }
 
-type Enrollment = {id:number}
+type Enrollment = {id:number, course_id: number, user:{integration_id:string}}
 
 /**
  * Get student course enrollment from Canvas.
@@ -21,20 +22,17 @@ type Enrollment = {id:number}
 export async function getCourseEnrollments(activityRoundId: string, studentId: string) : Promise<Enrollment[]>{
   assert(canvasApi, "Missing canvasApi");
   // https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.index
-  // kthId is called sis_user_id in KTH Canvas
-  // We need id of enrollment for the current use case so I passing it to the generic
-  let getEnrollments = async (sectionId: string): Promise<[Enrollment]>=>{
+  // We need id of enrollment to be able to delete an enrollment. Without the id we can only inactivate an enrollment, but not completelly remove it 
+  let getEnrollments = async (sectionId: string): Promise<Enrollment[]>=>{
 
     console.log(`sections/sis_section_id:${sectionId}/enrollments`)
-    let res = await canvasApi.get<[Enrollment]>(
-
+    const res = await canvasApi.get<Enrollment[]>(
       `sections/sis_section_id:${sectionId}/enrollments`,
       {
-        "user_id": `sis_integration_id:${studentId}`,
         "type": ["StudentEnrollment"],
       }
     )
-    return res.body;
+    return res.body.filter(enrollment => enrollment.user.integration_id === studentId)
   }
 
   // TODO: Handle errors better
@@ -48,20 +46,18 @@ export async function getCourseEnrollments(activityRoundId: string, studentId: s
 /**
  * Remove course enrollment of studend in Canvas.
  */
-export async function removeEnrollment(courseId: string, studentId: string) : Promise<void> {
+export async function removeEnrollment(activityRoundId: string, studentId: string, context: Context) : Promise<void> {
   assert(canvasApi, "Missing canvasApi");
 
-  const enrollments = await getCourseEnrollments(courseId, studentId)
-  console.log(enrollments)
+  const enrollments = await getCourseEnrollments(activityRoundId, studentId)
+  context.log(`Number of student enrollments found for user ${studentId}:${enrollments.length}`)
 
-  /* const enrollments1 = await canvasApi.listItems(`courses/sis_course_id:${courseId}/enrollments`).toArray(); */
-  /* const enrollments2 = await canvasApi.listItems(`courses/sis_course_id:${courseId}/enrollments`).toArray(); */
-  /* const usersEnrollments = [...enrollments1, enrollments2].filter(enrollment => enrollment.user?.integration_id ===studentId) */
-  /* console.log(usersEnrollments) */
-  // Now `courses` is an iterator that goes through every course
-  /* const res = await canvasApi.request( */
-  /*   `courses/${courseId}/enrollments/${studentId}?task=delete`, */
-  /*   "DELETE", */
-  /* ).catch((err) => { throw err }); */
+  for(const enrollment of await enrollments){
+    // Enrollments are deleted from the course, not from the section
+    await canvasApi.request(
+      `courses/${enrollment.course_id}/enrollments/${enrollment.id}?task=delete`,
+        "DELETE",
+    ).catch((err) => { throw err });
+  }
   // TODO: Handle errors better
 }

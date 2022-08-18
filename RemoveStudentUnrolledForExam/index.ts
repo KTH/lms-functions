@@ -19,7 +19,7 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
     }
 
     context.log(`Got message about student ${studentId} unrolled from exam ${activityRoundId}`)
-    const result = await removeEnrollment(activityRoundId, studentId).catch(err => {throw err})
+    const result = await removeEnrollment(activityRoundId, studentId, context).catch(err => {throw err})
     context.log(`Removed enrollment of user ${studentId} from exam ${activityRoundId}`);
 };
 
