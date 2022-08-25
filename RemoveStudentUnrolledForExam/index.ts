@@ -12,6 +12,10 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
     const activityRoundId = tmpMembership?.["ns0:collectionSourcedId"];
     const studentId = tmpMembership?.["ns0:member"]?.["ns0:personSourcedId"];
 
+    const extension = tmpMembership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.["ns0:extensionField"]?.["ns0:fieldValue"]
+
+    if( extension !== "LADOK.RemoveActivityOccasionApplication") return 
+
     if (!activityRoundId || !studentId) {
         context.log("Skipping! This message is missing 'activityRoundId' or 'studentId', so it isn't a message we can process.");
         return;
