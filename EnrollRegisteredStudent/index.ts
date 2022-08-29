@@ -44,11 +44,11 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   context: Context,
   message: string
 ): Promise<void> {
+  context.log("Message is", message);
   const parser = new XMLParser();
   const jsonObj = parser.parse(message);
 
   // NOTE: This log message should be deleted if there are too many logs
-  context.log("Message is", jsonObj);
 
   const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"];
 
