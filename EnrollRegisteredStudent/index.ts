@@ -28,15 +28,28 @@ function isRegistration(membership: any): boolean {
   const status = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
   if (status !== "Active") return false;
 
-  return ladokExtensionFieldMatch(
-    membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
-    {
-      Admitted: true,
-      Registered: true,
-      Break: false,
-      Dropout: false,
-      OriginEvent: "LADOK.AddRegistration",
-    }
+  // TODO: refactor
+  return (
+    ladokExtensionFieldMatch(
+      membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
+      {
+        Admitted: true,
+        Registered: true,
+        Break: false,
+        Dropout: false,
+        OriginEvent: "LADOK.AddRegistration",
+      }
+    ) ||
+    ladokExtensionFieldMatch(
+      membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
+      {
+        Admitted: true,
+        Registered: true,
+        Break: false,
+        Dropout: false,
+        OriginEvent: "LADOK.AddReRegistration",
+      }
+    )
   );
 }
 
@@ -70,21 +83,22 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   }
 
   // Process
-  await createCourseEnrollment(courseRoundId, studentId)
-    .catch((err) => canvasErrorHandler(context, err));
+  await createCourseEnrollment(courseRoundId, studentId).catch((err) =>
+    canvasErrorHandler(context, err)
+  );
 
   context.log("ServiceBus topic trigger function processed message", message);
 };
 
 export default serviceBusTopicTrigger;
 
-function canvasErrorHandler(context: Context, err: {err?: Error}) {
+function canvasErrorHandler(context: Context, err: { err?: Error }) {
   if (err.err instanceof CanvasApiError) {
     const errInner = err.err;
     /**
      * If Canvas replies 404 Not Found, this means that course couldn't be found.
      * If Canvas replise 400 Bad Request, this means that the student couldn't be found.
-     * 
+     *
      * These issues should be fixed during nightly batch updates so we consume this message.
      */
     if (errInner.code == 404 /* NOT FOUND */) {
