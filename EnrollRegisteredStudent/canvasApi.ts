@@ -18,6 +18,7 @@ export async function createCourseEnrollment(
 ): Promise<[{ id: number; course_id: number }]> {
   assert(canvasApi, "Missing canvasApi");
   // https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.create
+  // FIXME: this code does not remove the admitted enrollment, which means that students have double enrollments
   const res = await canvasApi
     .request<[{ id: number; course_id: number }]>(
       `sections/sis_section_id:${courseRoundId}/enrollments`,

@@ -16,18 +16,25 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
     switch( extension ){
       case "LADOK.RemoveActivityOccasionApplication":
         context.log('TODO: remove')
+        break
+      case "LADOK.AddRegistration":
+      case "LADOK.AddReRegistration":
+        context.log("TODO: enrollment")
+        break
+      default:
+        context.log('Something else', extension)
     }
 
     if( extension !== "LADOK.RemoveActivityOccasionApplication") return 
 
-    /* if (!activityRoundId || !studentId) { */
-    /*     context.log("Skipping! This message is missing 'activityRoundId' or 'studentId', so it isn't a message we can process."); */
-    /*     return; */
-    /* } */
+      /* if (!activityRoundId || !studentId) { */
+      /*     context.log("Skipping! This message is missing 'activityRoundId' or 'studentId', so it isn't a message we can process."); */
+      /*     return; */
+      /* } */
 
-    /* context.log(`Got message about student ${studentId} unrolled from exam ${activityRoundId}`) */
-    /* const result = await removeEnrollment(activityRoundId, studentId, context).catch(err => {throw err}) */
-    /* context.log(`Removed enrollment of user ${studentId} from exam ${activityRoundId}`); */
+      /* context.log(`Got message about student ${studentId} unrolled from exam ${activityRoundId}`) */
+      /* const result = await removeEnrollment(activityRoundId, studentId, context).catch(err => {throw err}) */
+      /* context.log(`Removed enrollment of user ${studentId} from exam ${activityRoundId}`); */
 };
 
 export default serviceBusTopicTrigger;
