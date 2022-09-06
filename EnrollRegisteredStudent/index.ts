@@ -13,7 +13,7 @@ function ladokExtensionFieldMatch(extension: object[], matchObj: object): boolea
   return true;
 }
 
-function isRegistration(membership: any): boolean {
+export function isRegistration(membership: any): boolean {
   if (!membership) return false;
 
   const membershipIdType = membership?.[
