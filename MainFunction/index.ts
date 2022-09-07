@@ -1,6 +1,7 @@
 import { AzureFunction, Context } from "@azure/functions"
 import { XMLParser } from "fast-xml-parser";
 import {isRegistration} from "../EnrollRegisteredStudent";
+import {isRemoveActivityOccasianApplicatoin} from "../RemoveStudentUnrolledForExam";
 
 const serviceBusTopicTrigger: AzureFunction = async function(context: Context, message: string): Promise<void> {
 
@@ -13,12 +14,17 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
     /* const studentId = tmpMembership?.["ns0:member"]?.["ns0:personSourcedId"]; */
 
     const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"];
+
     if( isRegistration(membership)){
       context.log("TODO: registration")
       return
     }
 
     
+    if( isRemoveActivityOccasianApplicatoin(membership)){
+      context.log("TODO: remove membership")
+      return
+    }
 
 
 
