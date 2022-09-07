@@ -1,6 +1,5 @@
-import { AzureFunction, Context } from "@azure/functions";
+import { Context } from "@azure/functions";
 import { CanvasApiError } from "@kth/canvas-api";
-import { XMLParser } from "fast-xml-parser";
 import { createCourseEnrollment } from "./canvasApi";
 
 function ladokExtensionFieldMatch(
@@ -53,27 +52,15 @@ export function isRegistration(membership: any): boolean {
   );
 }
 
-const serviceBusTopicTrigger: AzureFunction = async function (
+export async function enrollRegisteredStudent(
   context: Context,
-  message: string
+  membership: any
 ): Promise<void> {
-  context.log("Message is", message);
-  const parser = new XMLParser();
-  const jsonObj = parser.parse(message);
-
-  // NOTE: This log message should be deleted if there are too many logs
-
-  const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"];
-
-  // Guard
-  if (!isRegistration(membership)) {
-    context.log("Message is not registration. Skipping...");
-    return;
-  }
-
   // Unpack values
   const courseRoundId = membership?.["ns0:collectionSourcedId"];
   const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
+
+  context.log(`Enroll student ${studentId} in course room ${courseRoundId}`)
 
   if (!courseRoundId || !studentId) {
     context.log(
@@ -86,11 +73,7 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   await createCourseEnrollment(courseRoundId, studentId).catch((err) =>
     canvasErrorHandler(context, err)
   );
-
-  context.log("ServiceBus topic trigger function processed message", message);
 };
-
-export default serviceBusTopicTrigger;
 
 function canvasErrorHandler(context: Context, err: { err?: Error }) {
   if (err.err instanceof CanvasApiError) {

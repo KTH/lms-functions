@@ -33,6 +33,9 @@ export async function createCourseEnrollment(
       }
     )
     .catch((err) => {
+      // FIXME: errors isn't logged properly, and should be fixed
+      console.log(":::::::::::::::::: Error", err)
+      console.log("------------------------------")
       const action = 'createCourseEnrollment';
       throw new CanvasError({action, courseRoundId, studentId, err});;
     });
