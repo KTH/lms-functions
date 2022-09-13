@@ -14,7 +14,7 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
 
   if( isRegistration(membership)){
     context.log("Handle registration message")
-    enrollRegisteredStudent(context, membership)
+    await enrollRegisteredStudent(context, membership)
     context.log("Done handling registration message")
     return
   }
@@ -22,7 +22,7 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
 
   if( isRemoveActivityOccasianApplication(membership)){
     context.log("Handle remove activity application message")
-    removeActivityEnrollment(context, membership)
+    await removeActivityEnrollment(context, membership)
     context.log("Done handling remove activity application message")
     return
   }
