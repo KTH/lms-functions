@@ -1,3 +1,4 @@
+// TODO: ONE file for canvasApi!
 import CanvasApi from "@kth/canvas-api";
 import assert from "node:assert";
 
@@ -10,6 +11,10 @@ if (process.env.CANVAS_API_URL) {
   );
 } else {
   throw new Error("Missing env-var CANVAS_API_URL");
+}
+
+export async function sendEnrollments(filePath: string){
+  return canvasApi.sisImport(filePath)
 }
 
 export async function createCourseEnrollment(

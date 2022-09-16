@@ -1,6 +1,17 @@
 import { Context } from "@azure/functions";
-import { CanvasApiError } from "@kth/canvas-api";
-import { createCourseEnrollment } from "./canvasApi";
+import * as canvasApi from "./canvasApi";
+import {CanvasApiError} from "@kth/canvas-api";
+
+
+const csv = require("fast-csv");
+const os = require("os");
+const fs = require('fs')
+const path = require("path");
+
+const temporalDirectory = fs.mkdtempSync(
+  path.join(os.tmpdir(), "lms-enroll-registered-student-")
+);
+
 
 function ladokExtensionFieldMatch(
   extension: object[],
@@ -55,25 +66,65 @@ export function isRegistration(membership: any): boolean {
 export async function enrollRegisteredStudent(
   context: Context,
   membership: any
-): Promise<void> {
-  // Unpack values
+): Promise<{sisImportId: number}>{
+  const now = Date.now()
+  const filePath = path.join(temporalDirectory, `enrollment_${now}`);
+  context.log('Writing enrollment to file', filePath)
+
+  const writer = fs.createWriteStream(filePath);
+  const serializer = csv.format({ headers: true });
+
+  /* if (category === "other") { */
+  /*   return { sisImportId: null }; */
+  /* } */
+
+  const registeredStudentRole = 3
+  const antagenRole = 25 
+
+  /**********************/
   const courseRoundId = membership?.["ns0:collectionSourcedId"];
   const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
+  serializer.pipe(writer);
 
-  context.log(`Enroll student ${studentId} in course room ${courseRoundId}`)
+  serializer.write({
+    section_id: `sis_integration_id:${courseRoundId}`,
+    user_id: `user_integration_id:${studentId}`,
+    status: "active",
+    role_id: registeredStudentRole,
+  })
+  // TODO: remove antagna
 
-  if (!courseRoundId || !studentId) {
-    context.log(
-      "This message doesn't include either activity round id or student id. Skipping..."
-    );
-    return;
-  }
+  // This function does always return a "delete antagna" enrollment without
+  // checking if the antagna is actually enrolled in Canvas
+  serializer.write({
+  
+    section_id: `sis_integration_id:${courseRoundId}`,
+    user_id: `user_integration_id:${studentId}`,
+    status: "deleted",
+    role_id: antagenRole,
+    })
+  /**********************/
 
-  // Process
-  await createCourseEnrollment(courseRoundId, studentId).catch((err) =>
-    canvasErrorHandler(context, err)
+
+
+
+  serializer.end();
+
+  await new Promise((resolve, reject) => {
+    writer.on("finish", resolve);
+    writer.on("error", reject);
+  });
+
+  const { body } = await canvasApi.sendEnrollments(path) 
+
+  const url = new URL(
+    `/api/v1/accounts/1/sis_imports/${body.id}`,
+    process.env.CANVAS_API_URL
   );
-};
+  /* context.log(`Enrollments for ${groupName} sent to Canvas. Check ${url}`); */
+
+  return { sisImportId: body.id };
+}
 
 function canvasErrorHandler(context: Context, err: { err?: Error }) {
   if (err.err instanceof CanvasApiError) {
