@@ -74,10 +74,7 @@ export async function enrollRegisteredStudent(
   const writer = fs.createWriteStream(filePath);
   const serializer = csv.format({ headers: true });
 
-  /* if (category === "other") { */
-  /*   return { sisImportId: null }; */
-  /* } */
-
+  // TODO: use new student role!
   const registeredStudentRole = 3
   const antagenRole = 25 
 
@@ -86,23 +83,24 @@ export async function enrollRegisteredStudent(
   const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
   serializer.pipe(writer);
 
-  serializer.write({
-    section_id: `sis_integration_id:${courseRoundId}`,
-    user_id: `user_integration_id:${studentId}`,
-    status: "active",
-    role_id: registeredStudentRole,
-  })
-  // TODO: remove antagna
+  for await (const sectionId of [`AKT.${courseRoundId}`, `AKT.${courseRoundId}.FUNKA`]){
 
-  // This function does always return a "delete antagna" enrollment without
-  // checking if the antagna is actually enrolled in Canvas
-  serializer.write({
-  
-    section_id: `sis_integration_id:${courseRoundId}`,
-    user_id: `user_integration_id:${studentId}`,
-    status: "deleted",
-    role_id: antagenRole,
+    // add registered student
+    serializer.write({
+      section_id: sectionId, 
+      user_id: `user_integration_id:${studentId}`,
+      status: "active",
+      role_id: registeredStudentRole,
     })
+
+    // remove admitted student
+    serializer.write({
+      section_id: sectionId,
+      user_id: `user_integration_id:${studentId}`,
+      status: "deleted",
+      role_id: antagenRole,
+    })
+  }
   /**********************/
 
 
