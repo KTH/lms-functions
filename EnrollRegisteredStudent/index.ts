@@ -30,6 +30,7 @@ function ladokExtensionFieldMatch(
 }
 
 export function isRegistration(membership: any): boolean {
+  // FIXME: re-registration isn't caught by this function! 
   if (!membership) return false;
 
   const membershipIdType = membership?.["ns0:membershipIdType"];
@@ -112,6 +113,7 @@ export async function enrollRegisteredStudent(
     writer.on("finish", resolve);
     writer.on("error", reject);
   });
+  context.log('Sending enrollments ', path)
 
   const { body } = await canvasApi.sendEnrollments(path) 
 
