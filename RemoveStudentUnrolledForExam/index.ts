@@ -4,7 +4,7 @@ import { removeEnrollment } from "./canvasApi";
 
 export function isRemoveActivityOccasianApplication(membership: any): boolean{
 
-    const extension = membership["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.["ns0:extensionField"]?.["ns0:fieldValue"]
+    const extension = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.["ns0:extensionField"]?.["ns0:fieldValue"]
 
     return  extension === "LADOK.RemoveActivityOccasionApplication"
 }
