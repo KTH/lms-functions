@@ -1,30 +1,30 @@
 // TODO: ONE file for canvasApi!
 import CanvasApi from "@kth/canvas-api";
-import assert from "node:assert";
 
-let canvasApi: CanvasApi;
 
-if (process.env.CANVAS_API_URL) {
-  canvasApi = new CanvasApi(
+let _canvasApi: CanvasApi;
+function getCanvasApi(){
+  if (!process.env.CANVAS_API_URL) {
+    throw new Error("Missing env-var CANVAS_API_URL");
+  }
+  _canvasApi = _canvasApi || new CanvasApi(
     process.env.CANVAS_API_URL,
     process.env.CANVAS_API_ADMIN_TOKEN
   );
-} else {
-  throw new Error("Missing env-var CANVAS_API_URL");
+  return _canvasApi
 }
 
 export async function sendEnrollments(filePath: string){
-  return canvasApi.sisImport(filePath)
+  return getCanvasApi().sisImport(filePath)
 }
 
 export async function createCourseEnrollment(
   courseRoundId: string,
   studentId: string
 ): Promise<[{ id: number; course_id: number }]> {
-  assert(canvasApi, "Missing canvasApi");
   // https://canvas.instructure.com/doc/api/enrollments.html#method.enrollments_api.create
   // FIXME: this code does not remove the admitted enrollment, which means that students have double enrollments
-  const res = await canvasApi
+  const res = await getCanvasApi() 
     .request<[{ id: number; course_id: number }]>(
       `sections/sis_section_id:${courseRoundId}/enrollments`,
       "POST",

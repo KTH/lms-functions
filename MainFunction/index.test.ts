@@ -6,7 +6,7 @@
 
 // const mainFile = require('./index.ts')
 // const mainFunction = mainFile['default']
-import * as mainFunction from './index'
+import * as mainFunction from './index.ts'
 const {enrollRegisteredStudent} = require('../EnrollRegisteredStudent')
 const context = {log: console.log}
 test('Registration message should trigger the enrollRegisteredStudent function',()=>{

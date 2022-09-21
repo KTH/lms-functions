@@ -15,18 +15,19 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
 
   if( isRegistration(membership)){
     context.log("Handle registration message")
-    await enrollRegisteredStudent(context, membership)
+    console.log('::::::::::::;',enrollRegisteredStudent)
+    /* await enrollRegisteredStudent(context, membership) */
     context.log("Done handling registration message")
     return
   }
 
 
-  if( isRemoveActivityOccasianApplication(membership)){
-    context.log("Handle remove activity application message")
-    await removeActivityEnrollment(context, membership)
-    context.log("Done handling remove activity application message")
-    return
-  }
+  /* if( isRemoveActivityOccasianApplication(membership)){ */
+  /*   context.log("Handle remove activity application message") */
+  /*   await removeActivityEnrollment(context, membership) */
+  /*   context.log("Done handling remove activity application message") */
+  /*   return */
+  /* } */
 
 
   context.log("Message is not relevant. Skipping...");
