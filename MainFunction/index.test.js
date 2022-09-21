@@ -1,4 +1,4 @@
-const mainFunction = require('./index.js')
+const mainFunction = require('./index.ts')
 // import * as mainFunction from 'index.js'
 test('Registration message should trigger the enrollRegisteredStudent function',()=>{
   mainFunction({}, ```
