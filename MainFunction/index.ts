@@ -14,11 +14,11 @@ const serviceBusTopicTrigger: AzureFunction = async function(context: Context, m
   const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"];
 
   if( isRegistration(membership)){
-    context.log("Handle registration message")
-    console.log('::::::::::::;',enrollRegisteredStudent)
-    /* await enrollRegisteredStudent(context, membership) */
-    context.log("Done handling registration message")
-    return
+  /*   context.log("Handle registration message") */
+  /*   console.log('::::::::::::;',enrollRegisteredStudent) */
+  /*   /1* await enrollRegisteredStudent(context, membership) *1/ */
+  /*   context.log("Done handling registration message") */
+  /*   return */
   }
 
 

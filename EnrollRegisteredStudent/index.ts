@@ -30,38 +30,39 @@ function ladokExtensionFieldMatch(
 }
 
 export function isRegistration(membership: any): boolean {
-  // FIXME: re-registration isn't caught by this function! 
-  if (!membership) return false;
+  /* // FIXME: re-registration isn't caught by this function! */ 
+  /* if (!membership) return false; */
 
-  const membershipIdType = membership?.["ns0:membershipIdType"];
-  if (membershipIdType !== "courseOffering") return false;
+  /* const membershipIdType = membership?.["ns0:membershipIdType"]; */
+  /* if (membershipIdType !== "courseOffering") return false; */
 
-  const status = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
-  if (status !== "Active") return false;
+  /* const status = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:status"]; */
+  /* if (status !== "Active") return false; */
 
-  // TODO: refactor
-  return (
-    ladokExtensionFieldMatch(
-      membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
-      {
-        Admitted: true,
-        Registered: true,
-        Break: false,
-        Dropout: false,
-        OriginEvent: "LADOK.AddRegistration",
-      }
-    ) ||
-    ladokExtensionFieldMatch(
-      membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
-      {
-        Admitted: true,
-        Registered: true,
-        Break: false,
-        Dropout: false,
-        OriginEvent: "LADOK.AddReRegistration",
-      }
-    )
-  );
+  /* // TODO: refactor */
+  /* return ( */
+  /*   ladokExtensionFieldMatch( */
+  /*     membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"], */
+  /*     { */
+  /*       Admitted: true, */
+  /*       Registered: true, */
+  /*       Break: false, */
+  /*       Dropout: false, */
+  /*       OriginEvent: "LADOK.AddRegistration", */
+  /*     } */
+  /*   ) || */
+  /*   ladokExtensionFieldMatch( */
+  /*     membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"], */
+  /*     { */
+  /*       Admitted: true, */
+  /*       Registered: true, */
+  /*       Break: false, */
+  /*       Dropout: false, */
+  /*       OriginEvent: "LADOK.AddReRegistration", */
+  /*     } */
+  /*   ) */
+  /* ); */
+  return false
 }
 
 export async function enrollRegisteredStudent(
