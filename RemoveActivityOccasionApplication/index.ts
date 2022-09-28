@@ -2,7 +2,7 @@ import { Context } from "@azure/functions"
 import { XMLParser } from "fast-xml-parser";
 import { removeEnrollment } from "../canvasApi";
 
-export function isRemoveActivityOccasianApplication(membership: any): boolean{
+export function isRemoveActivityOccasionApplication(membership: any): boolean{
 
     const extension = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.["ns0:extensionField"]?.["ns0:fieldValue"]
 

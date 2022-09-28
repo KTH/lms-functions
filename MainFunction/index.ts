@@ -2,7 +2,7 @@ import { AzureFunction, Context } from "@azure/functions"
 
 import { XMLParser } from "fast-xml-parser";
 import {isRegistration, enrollRegisteredStudent} from "../EnrollRegisteredStudent";
-import {isRemoveActivityOccasianApplication, removeActivityEnrollment} from "../RemoveStudentUnrolledForExam";
+import {isRemoveActivityOccasionApplication, removeActivityEnrollment} from "../RemoveActivityOccasionApplication";
 
 const serviceBusTopicTrigger: AzureFunction = async function(context: Context, message: string): Promise<void> {
 
