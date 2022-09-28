@@ -1,5 +1,5 @@
 import { Context } from "@azure/functions";
-import * as canvasApi from "./canvasApi";
+import * as canvasApi from "../canvasApi";
 import {CanvasApiError} from "@kth/canvas-api";
 
 

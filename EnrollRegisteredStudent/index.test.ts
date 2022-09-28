@@ -1,10 +1,3 @@
-// TODO: if I mock this file, I need to preserve the original isRegistration function. Probably better to test the registration file instead of the main function?
-
-/* jest.mock('../EnrollRegisteredStudent', ()=>{ */
-/*   // mock implementation so we don't send anything to Canvas */
-/*   return {enrollRegisteredStudent: ()=>{}} */
-/* }) */
-
 import {isRegistration} from './index'
 
 test('An AddRegistration message should be considered a registration',()=>{

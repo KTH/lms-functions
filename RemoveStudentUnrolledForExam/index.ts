@@ -1,6 +1,6 @@
 import { Context } from "@azure/functions"
 import { XMLParser } from "fast-xml-parser";
-import { removeEnrollment } from "./canvasApi";
+import { removeEnrollment } from "../canvasApi";
 
 export function isRemoveActivityOccasianApplication(membership: any): boolean{
 

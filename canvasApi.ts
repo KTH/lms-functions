@@ -2,6 +2,7 @@
 import CanvasApi from "@kth/canvas-api";
 
 import { Context } from "@azure/functions"
+import assert from "assert";
 
 type Enrollment = {id:number, course_id: number, user:{integration_id:string}}
 
