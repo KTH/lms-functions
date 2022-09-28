@@ -2,6 +2,7 @@ import { Context } from "@azure/functions";
 import * as canvasApi from "../canvasApi";
 import { XMLParser } from "fast-xml-parser";
 import {CanvasApiError} from "@kth/canvas-api";
+import {getMembership} from "../utils";
 
 
 const csv = require("fast-csv");
@@ -31,10 +32,7 @@ function ladokExtensionFieldMatch(
 }
 
 export function isRegistration(message: string): boolean {
-  // 1. Parse incomming message
-  const parser = new XMLParser();
-  const jsonObj = parser.parse(message);
-  const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]; 
+  const membership = getMembership(message)
   if (!membership) return false;
 
   const membershipIdType = membership?.["ns0:membershipIdType"];
