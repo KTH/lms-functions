@@ -9,13 +9,10 @@ import {isRemoveActivityOccasionApplication, removeActivityEnrollment} from "../
 const serviceBusTopicTrigger: AzureFunction = async function(context: Context, message: string): Promise<void> {
 
   context.log("Message is", message);
-  // 1. Parse incomming message
-  const parser = new XMLParser();
-  const jsonObj = parser.parse(message);
 
   /* const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]; */
 
-  if( isRegistration(jsonObj)){
+  if( isRegistration(message)){
   /*   context.log("Handle registration message") */
   /*   console.log('::::::::::::;',enrollRegisteredStudent) */
   /*   /1* await enrollRegisteredStudent(context, membership) *1/ */

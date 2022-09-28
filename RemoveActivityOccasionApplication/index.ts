@@ -2,11 +2,15 @@ import { Context } from "@azure/functions"
 import { XMLParser } from "fast-xml-parser";
 import { removeEnrollment } from "../canvasApi";
 
-export function isRemoveActivityOccasionApplication(jsonObj: any): boolean{
+// TODO: inparam is string!
+export function isRemoveActivityOccasionApplication(message: string): boolean{
+
+  // 1. Parse incomming message
+  const parser = new XMLParser();
+  const jsonObj = parser.parse(message);
   const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]; 
 
   const extension = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.["ns0:extensionField"]?.["ns0:fieldValue"]
-
   return  extension === "LADOK.RemoveActivityOccasionApplication"
 }
 
