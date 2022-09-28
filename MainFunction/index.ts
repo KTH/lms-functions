@@ -4,6 +4,8 @@ import { XMLParser } from "fast-xml-parser";
 import {isRegistration, enrollRegisteredStudent} from "../RegisteredStudent";
 import {isRemoveActivityOccasionApplication, removeActivityEnrollment} from "../RemoveActivityOccasionApplication";
 
+// TODO: don't transpile tests when running, or ignore the transpiled tests in dist
+
 const serviceBusTopicTrigger: AzureFunction = async function(context: Context, message: string): Promise<void> {
 
   context.log("Message is", message);
