@@ -66,15 +66,8 @@ test('A ReRegistration message should be considered a registration',()=>{
       <ns0:member>
          <ns0:personSourcedId>e24e555f-9629-11e8-bf01-45625eef45e2</ns0:personSourcedId>
          <ns0:role>
-            <ns0:roleType>Learner</ns0:roleType>
-            <ns0:timeFrame>
-               <ns0:begin />
-               <ns0:end />
-            </ns0:timeFrame>
             <ns0:status>Active</ns0:status>
             <ns0:extension>
-               <ns0:extensionNameVocabulary>LocallyDefined</ns0:extensionNameVocabulary>
-               <ns0:extensionTypeVocabulary>http://www.imsglobal.org/lis/cmsv1p0/extensionvocabularyv1p0</ns0:extensionTypeVocabulary>
                <ns0:extensionField>
                   <ns0:fieldName>Admitted</ns0:fieldName>
                   <ns0:fieldType>Boolean</ns0:fieldType>
@@ -100,51 +93,6 @@ test('A ReRegistration message should be considered a registration',()=>{
                   <ns0:fieldType>string</ns0:fieldType>
                   <ns0:fieldValue>LADOK.AddReRegistration</ns0:fieldValue>
                </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>EarlyAccess</ns0:fieldName>
-                  <ns0:fieldType>Boolean</ns0:fieldType>
-                  <ns0:fieldValue>false</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>participation.program.code</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>CTFYS</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.is.root.packaging</ns0:fieldName>
-                  <ns0:fieldType>Boolean</ns0:fieldType>
-                  <ns0:fieldValue>false</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.is.latter.part</ns0:fieldName>
-                  <ns0:fieldType>Boolean</ns0:fieldType>
-                  <ns0:fieldValue>false</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.code</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>SG1113</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.instance.code</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>50209</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.uid</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>81b4a62a-73d8-11e8-afa7-8e408e694e54</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.version.uid</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>81a42ab1-73d8-11e8-b4e0-063f9afb40e3</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.type.id</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>52</ns0:fieldValue>
-               </ns0:extensionField>
             </ns0:extension>
          </ns0:role>
       </ns0:member>
@@ -164,9 +112,6 @@ test('A RemoveActivity message should NOT be considered a registration',()=>{
       <ns0:member>
          <ns0:personSourcedId>7451ed4c-4376-11eb-aa19-cdd070ea4b24</ns0:personSourcedId>
          <ns0:role>
-            <ns0:roleType>Student</ns0:roleType>
-            <ns0:status>Inactive</ns0:status>
-            <ns0:dataSource>Ladok</ns0:dataSource>
             <ns0:extension>
                <ns0:extensionField>
                   <ns0:fieldName>OriginEvent</ns0:fieldName>
