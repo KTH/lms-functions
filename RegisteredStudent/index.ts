@@ -29,8 +29,8 @@ function ladokExtensionFieldMatch(
   return true;
 }
 
-export function isRegistration(membership: any): boolean {
-  // FIXME: re-registration isn't caught by this function! 
+export function isRegistration(jsonObj: any): boolean {
+  const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]; 
   if (!membership) return false;
 
   const membershipIdType = membership?.["ns0:membershipIdType"];

@@ -2,11 +2,12 @@ import { Context } from "@azure/functions"
 import { XMLParser } from "fast-xml-parser";
 import { removeEnrollment } from "../canvasApi";
 
-export function isRemoveActivityOccasionApplication(membership: any): boolean{
+export function isRemoveActivityOccasionApplication(jsonObj: any): boolean{
+  const membership = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"]; 
 
-    const extension = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.["ns0:extensionField"]?.["ns0:fieldValue"]
+  const extension = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.["ns0:extensionField"]?.["ns0:fieldValue"]
 
-    return  extension === "LADOK.RemoveActivityOccasionApplication"
+  return  extension === "LADOK.RemoveActivityOccasionApplication"
 }
 
 export async function removeActivityEnrollment(context: Context, membership: any): Promise<void> {
