@@ -19,8 +19,6 @@ test('An AddRegistration message should be considered a registration',()=>{
             </ns0:timeFrame>
             <ns0:status>Active</ns0:status>
             <ns0:extension>
-               <ns0:extensionNameVocabulary>LocallyDefined</ns0:extensionNameVocabulary>
-               <ns0:extensionTypeVocabulary>http://www.imsglobal.org/lis/cmsv1p0/extensionvocabularyv1p0</ns0:extensionTypeVocabulary>
                <ns0:extensionField>
                   <ns0:fieldName>Admitted</ns0:fieldName>
                   <ns0:fieldType>Boolean</ns0:fieldType>
@@ -46,57 +44,7 @@ test('An AddRegistration message should be considered a registration',()=>{
                   <ns0:fieldType>string</ns0:fieldType>
                   <ns0:fieldValue>LADOK.AddRegistration</ns0:fieldValue>
                </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>EarlyAccess</ns0:fieldName>
-                  <ns0:fieldType>Boolean</ns0:fieldType>
-                  <ns0:fieldValue>false</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>participation.program.code</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>TIBYH</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>participation.programdirection.code</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>HUPK</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.is.latter.part</ns0:fieldName>
-                  <ns0:fieldType>Boolean</ns0:fieldType>
-                  <ns0:fieldValue>false</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.is.root.packaging</ns0:fieldName>
-                  <ns0:fieldType>Boolean</ns0:fieldType>
-                  <ns0:fieldValue>false</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.code</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>AF179X</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.instance.code</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>50069</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.uid</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>2aee98c0-73d8-11e8-afa7-8e408e694e54</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.version.uid</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>2ae83041-73d8-11e8-b4e0-063f9afb40e3</ns0:fieldValue>
-               </ns0:extensionField>
-               <ns0:extensionField>
-                  <ns0:fieldName>education.type.id</ns0:fieldName>
-                  <ns0:fieldType>string</ns0:fieldType>
-                  <ns0:fieldValue>52</ns0:fieldValue>
-               </ns0:extensionField>
-            </ns0:extension>
+           </ns0:extension>
          </ns0:role>
       </ns0:member>
    </ns0:membership>
