@@ -1,5 +1,4 @@
 import { Context } from "@azure/functions"
-import { XMLParser } from "fast-xml-parser";
 import { removeEnrollment } from "../canvasApi";
 import {getMembership} from "../utils";
 

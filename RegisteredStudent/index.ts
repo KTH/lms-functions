@@ -1,6 +1,5 @@
 import { Context } from "@azure/functions";
 import * as canvasApi from "../canvasApi";
-import { XMLParser } from "fast-xml-parser";
 import {CanvasApiError} from "@kth/canvas-api";
 import {getMembership} from "../utils";
 

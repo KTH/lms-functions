@@ -1,6 +1,5 @@
 import { AzureFunction, Context } from "@azure/functions"
 
-import { XMLParser } from "fast-xml-parser";
 import {isRegistration, enrollRegisteredStudent} from "../RegisteredStudent";
 import {isRemoveActivityOccasionApplication, removeActivityEnrollment} from "../RemoveActivityOccasionApplication";
 
