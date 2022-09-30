@@ -2,7 +2,6 @@ import { Context } from "@azure/functions"
 import { removeEnrollment } from "../canvasApi";
 import {getMembership} from "../utils";
 
-// TODO: inparam is string!
 export function isRemoveActivityOccasionApplication(message: string): boolean{
   const membership = getMembership(message)
 

@@ -1,4 +1,3 @@
-// TODO: ONE file for canvasApi!
 import CanvasApi from "@kth/canvas-api";
 
 import { Context } from "@azure/functions"
