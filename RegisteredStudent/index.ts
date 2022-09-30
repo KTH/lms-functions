@@ -67,8 +67,9 @@ export function isRegistration(message: string): boolean {
 
 export async function enrollRegisteredStudent(
   context: Context,
-  membership: any
+  message: string 
 ): Promise<{sisImportId: number}>{
+  const membership = getMembership(message)
   const now = Date.now()
   const filePath = path.join(temporalDirectory, `enrollment_${now}`);
   context.log('Writing enrollment to file', filePath)
