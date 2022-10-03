@@ -65,7 +65,8 @@ export function isRegistration(message: string): boolean {
   );
 }
 
-export async function enrollRegisteredStudent(
+
+export async function _enrollRegisteredStudentActivityRound(
   context: Context,
   message: string 
 ): Promise<{sisImportId: number}>{
@@ -78,10 +79,9 @@ export async function enrollRegisteredStudent(
   const serializer = csv.format({ headers: true });
 
   // TODO: use new student role!
-  const registeredStudentRole = 3
+  const registeredStudentRole = 164
   const antagenRole = 25 
 
-  /**********************/
   const courseRoundId = membership?.["ns0:collectionSourcedId"];
   const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
   serializer.pipe(writer);
@@ -104,10 +104,6 @@ export async function enrollRegisteredStudent(
       role_id: antagenRole,
     })
   }
-  /**********************/
-
-
-
 
   serializer.end();
 
@@ -115,9 +111,65 @@ export async function enrollRegisteredStudent(
     writer.on("finish", resolve);
     writer.on("error", reject);
   });
-  context.log('Sending enrollments ', path)
+  context.log('Sending enrollments ', filePath)
 
-  const { body } = await canvasApi.sendEnrollments(path) 
+  const { body } = await canvasApi.sendEnrollments(filePath) 
+
+  const url = new URL(
+    `/api/v1/accounts/1/sis_imports/${body.id}`,
+    process.env.CANVAS_API_URL
+  );
+  /* context.log(`Enrollments for ${groupName} sent to Canvas. Check ${url}`); */
+
+  return { sisImportId: body.id };
+}
+
+export async function enrollRegisteredStudent(
+  context: Context,
+  message: string 
+): Promise<{sisImportId: number}>{
+  const membership = getMembership(message)
+  const now = Date.now()
+  const filePath = path.join(temporalDirectory, `enrollment_${now}`);
+  context.log('Writing enrollment to file', filePath)
+
+  const writer = fs.createWriteStream(filePath);
+  const serializer = csv.format({ headers: true });
+
+  // TODO: use new student role!
+  const registeredStudentRole = 164
+  const antagenRole = 25 
+
+  const courseRoundId = membership?.["ns0:collectionSourcedId"];
+  const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
+  serializer.pipe(writer);
+
+
+  // add registered student
+  serializer.write({
+    section_id: courseRoundId, 
+    user_id: `user_integration_id:${studentId}`,
+    status: "active",
+    role_id: registeredStudentRole,
+  })
+
+  // remove admitted student
+  serializer.write({
+    section_id: courseRoundId,
+    user_id: `user_integration_id:${studentId}`,
+    status: "deleted",
+    role_id: antagenRole,
+  })
+
+  serializer.end();
+
+  await new Promise((resolve, reject) => {
+    writer.on("finish", resolve);
+    writer.on("error", reject);
+  });
+  context.log('Sending enrollments ', filePath)
+
+  const { body } = await canvasApi.sendEnrollments(filePath) 
 
   const url = new URL(
     `/api/v1/accounts/1/sis_imports/${body.id}`,
