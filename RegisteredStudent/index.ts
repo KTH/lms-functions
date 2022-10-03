@@ -136,7 +136,6 @@ export async function enrollRegisteredStudent(
   const writer = fs.createWriteStream(filePath);
   const serializer = csv.format({ headers: true });
 
-  // TODO: use new student role!
   const registeredStudentRole = 164
   const antagenRole = 25 
 
@@ -175,7 +174,9 @@ export async function enrollRegisteredStudent(
     `/api/v1/accounts/1/sis_imports/${body.id}`,
     process.env.CANVAS_API_URL
   );
-  /* context.log(`Enrollments for ${groupName} sent to Canvas. Check ${url}`); */
+  context.log(`Enrollments sent to Canvas. Check ${url}`);
+
+  // TODO: this code doesn't send any files to Canvas. Investigate why.
 
   return { sisImportId: body.id };
 }
