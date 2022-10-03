@@ -72,7 +72,7 @@ export async function _enrollRegisteredStudentActivityRound(
 ): Promise<{sisImportId: number}>{
   const membership = getMembership(message)
   const now = Date.now()
-  const filePath = path.join(temporalDirectory, `enrollment_${now}`);
+  const filePath = path.join(temporalDirectory, `enrollment_${now}.csv`);
   context.log('Writing enrollment to file', filePath)
 
   const writer = fs.createWriteStream(filePath);
@@ -130,7 +130,7 @@ export async function enrollRegisteredStudent(
 ): Promise<{sisImportId: number}>{
   const membership = getMembership(message)
   const now = Date.now()
-  const filePath = path.join(temporalDirectory, `enrollment_${now}`);
+  const filePath = path.join(temporalDirectory, `enrollment_${now}.csv`);
   context.log('Writing enrollment to file', filePath)
 
   const writer = fs.createWriteStream(filePath);
@@ -176,7 +176,7 @@ export async function enrollRegisteredStudent(
   );
   context.log(`Enrollments sent to Canvas. Check ${url}`);
 
-  // TODO: this code doesn't send any files to Canvas. Investigate why.
+  // TODO: this code sends csv file to Canvas, but Canvas warns with not being able to find the user
 
   return { sisImportId: body.id };
 }
