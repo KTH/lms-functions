@@ -5,4 +5,5 @@ module.exports = {
   transform: {
     "^.+\\.ts?$": ["ts-jest", { useESM: true }],
   },
+  testPathIgnorePatterns: ["/node_modules/", "dist"],
 };
