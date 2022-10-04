@@ -6,11 +6,6 @@ const studentRole = 3;
 
 export function isRemoveActivityOccasionApplication(message: string): boolean {
   const membership = getMembership(message);
-  /* const extension = */
-  /*   membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.[ */
-  /*     "ns0:extensionField" */
-  /*   ]?.["ns0:fieldValue"]; */
-  /* return extension === "LADOK.RemoveActivityOccasionApplication"; */
   return ladokExtensionFieldMatch(
     membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
     {
