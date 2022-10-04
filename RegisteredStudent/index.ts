@@ -6,7 +6,7 @@ function ladokExtensionFieldMatch(
   extension: object[],
   matchObj: object
 ): boolean {
-  for (let key of Object.keys(matchObj)) {
+  for (const key of Object.keys(matchObj)) {
     const field = extension?.["ns0:extensionField"].find(
       (el) => el["ns0:fieldName"] === key
     );
@@ -25,8 +25,8 @@ export function isRegistration(message: string): boolean {
   const membershipIdType = membership?.["ns0:membershipIdType"];
   if (membershipIdType !== "courseOffering") return false;
 
-  const status = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
-  if (status !== "Active") return false;
+  const ns0status = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
+  if (ns0status !== "Active") return false;
 
   return (
     ladokExtensionFieldMatch(
