@@ -93,51 +93,6 @@ test("A Re-Registration message should be considered a registration of a student
 						<ns0:fieldType>string</ns0:fieldType>
 						<ns0:fieldValue>LADOK.AddReRegistration</ns0:fieldValue>
 					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>EarlyAccess</ns0:fieldName>
-						<ns0:fieldType>Boolean</ns0:fieldType>
-						<ns0:fieldValue>false</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>participation.program.code</ns0:fieldName>
-						<ns0:fieldType>string</ns0:fieldType>
-						<ns0:fieldValue>TIMTM</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>education.is.root.packaging</ns0:fieldName>
-						<ns0:fieldType>Boolean</ns0:fieldType>
-						<ns0:fieldValue>false</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>education.is.latter.part</ns0:fieldName>
-						<ns0:fieldType>Boolean</ns0:fieldType>
-						<ns0:fieldValue>false</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>education.code</ns0:fieldName>
-						<ns0:fieldType>string</ns0:fieldType>
-						<ns0:fieldValue>DD2350</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>education.instance.code</ns0:fieldName>
-						<ns0:fieldType>string</ns0:fieldType>
-						<ns0:fieldValue>52200</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>education.uid</ns0:fieldName>
-						<ns0:fieldType>string</ns0:fieldType>
-						<ns0:fieldValue>399200f2-73d8-11e8-afa7-8e408e694e54</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>education.version.uid</ns0:fieldName>
-						<ns0:fieldType>string</ns0:fieldType>
-						<ns0:fieldValue>def14a20-d6c0-11e8-8fd5-cf9d2c5c41ba</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>education.type.id</ns0:fieldName>
-						<ns0:fieldType>string</ns0:fieldType>
-						<ns0:fieldValue>52</ns0:fieldValue>
-					</ns0:extensionField>
 				</ns0:extension>
 			</ns0:role>
 		</ns0:member>
