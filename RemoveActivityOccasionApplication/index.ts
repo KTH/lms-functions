@@ -19,6 +19,23 @@ export async function removeActivityEnrollment(context: Context, message: string
     context.log("Skipping! This message is missing 'activityRoundId' or 'studentId', so it isn't a message we can process.");
     return;
   }
+  const studentRole = 3 
+  const studentEnrollments = [
+
+    {
+      section_id: `AKT.${activityRoundId}`, 
+      user_integration_id: studentId,
+      status: "deleted",
+      role_id: studentRole,
+    },{
+      section_id: `AKT.${activityRoundId}.FUNKA`,
+      user_integration_id: studentId,
+      status: "deleted",
+      role_id: studentRole,
+    }]
+  
+
+
 
   context.log(`Got message about student ${studentId} unrolled from exam ${activityRoundId}`)
   /* await removeEnrollment(activityRoundId, studentId, context).catch(err => {throw err}) */

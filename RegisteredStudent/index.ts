@@ -136,18 +136,6 @@ export async function enrollRegisteredStudent(
     role_id: antagenRole,
   }]
 
-  const filePath = await createEnrollmentsFile(enrollments)
-
-  const { body } = await canvasApi.sendEnrollments(filePath) 
-
-  const url = new URL(
-    `/api/v1/accounts/1/sis_imports/${body.id}`,
-    process.env.CANVAS_API_URL
-  );
-  context.log(`Enrollments sent to Canvas. Check ${url}`);
-
-  // TODO: this code sends csv file to Canvas, but Canvas warns with not being able to find the user
-
-  return { sisImportId: body.id };
+  return canvasApi.sendEnrollments(enrollments, context) 
 }
 
