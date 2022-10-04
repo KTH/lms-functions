@@ -1,5 +1,5 @@
 import { Context } from "@azure/functions"
-import { removeEnrollment } from "../canvasApi";
+import * as canvasApi from "../canvasApi";
 import {getMembership} from "../utils";
 
 export function isRemoveActivityOccasionApplication(message: string): boolean{
@@ -21,7 +21,7 @@ export async function removeActivityEnrollment(context: Context, message: string
   }
 
   context.log(`Got message about student ${studentId} unrolled from exam ${activityRoundId}`)
-  await removeEnrollment(activityRoundId, studentId, context).catch(err => {throw err})
+  /* await removeEnrollment(activityRoundId, studentId, context).catch(err => {throw err}) */
   context.log(`Removed enrollment of user ${studentId} from exam ${activityRoundId}`);
 };
 

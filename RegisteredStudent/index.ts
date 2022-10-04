@@ -1,17 +1,6 @@
 import { Context } from "@azure/functions";
 import * as canvasApi from "../canvasApi";
-import {CanvasApiError} from "@kth/canvas-api";
-import {getMembership} from "../utils";
-
-
-const csv = require("fast-csv");
-const os = require("os");
-const fs = require('fs')
-const path = require("path");
-
-const temporalDirectory = fs.mkdtempSync(
-  path.join(os.tmpdir(), "lms-enroll-registered-student-")
-);
+import {getMembership, createEnrollmentsFile} from "../utils";
 
 
 function ladokExtensionFieldMatch(
@@ -129,44 +118,25 @@ export async function enrollRegisteredStudent(
   message: string 
 ): Promise<{sisImportId: number}>{
   const membership = getMembership(message)
-  const now = Date.now()
-  const filePath = path.join(temporalDirectory, `enrollment_${now}.csv`);
-  context.log('Writing enrollment to file', filePath)
-
-  const writer = fs.createWriteStream(filePath);
-  const serializer = csv.format({ headers: true });
 
   const registeredStudentRole = 164
   const antagenRole = 25 
 
   const courseRoundId = membership?.["ns0:collectionSourcedId"];
   const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
-  serializer.pipe(writer);
-
-
-  // add registered student
-  serializer.write({
+  const enrollments = [{
     section_id: courseRoundId, 
     user_integration_id: studentId,
     status: "active",
     role_id: registeredStudentRole,
-  })
-
-  // remove admitted student
-  serializer.write({
+  },{
     section_id: courseRoundId,
     user_integration_id: studentId,
     status: "deleted",
     role_id: antagenRole,
-  })
+  }]
 
-  serializer.end();
-
-  await new Promise((resolve, reject) => {
-    writer.on("finish", resolve);
-    writer.on("error", reject);
-  });
-  context.log('Sending enrollments ', filePath)
+  const filePath = await createEnrollmentsFile(enrollments)
 
   const { body } = await canvasApi.sendEnrollments(filePath) 
 
@@ -181,23 +151,3 @@ export async function enrollRegisteredStudent(
   return { sisImportId: body.id };
 }
 
-function canvasErrorHandler(context: Context, err: { err?: Error }) {
-  if (err.err instanceof CanvasApiError) {
-    const errInner = err.err;
-    /**
-     * If Canvas replies 404 Not Found, this means that course couldn't be found.
-     * If Canvas replise 400 Bad Request, this means that the student couldn't be found.
-     *
-     * These issues should be fixed during nightly batch updates so we consume this message.
-     */
-    if (errInner.code == 404 /* NOT FOUND */) {
-      context.log("Canvas replied course not found, silently consuming");
-      return;
-    } else if (errInner.code == 400 /* BAD REQUEST */) {
-      context.log("Canvas replied student not found, silently consuming");
-      return;
-    }
-  }
-
-  throw err;
-}
