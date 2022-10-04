@@ -13,7 +13,7 @@
     "start": "npm-run-all --parallel start:host watch",
     "lint": "eslint **/*.ts",
     "format": "prettier --check .",
-    "test": "npm lint && jest"
+    "test": "npm run lint && jest"
   },
   "description": "",
   "devDependencies": {
