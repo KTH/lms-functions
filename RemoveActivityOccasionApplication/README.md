@@ -1,6 +1,7 @@
 # How to test the function
 
 1. Prerequisites:
+
 - a student enrolled to a course in Canvas
 - the LADOK id of the course (aktivitetstillfälle/activity round id)
 - the LADOK id of the student
@@ -33,4 +34,4 @@
 
 3. Use the prepared Azure Functions trigger in Postman
 
-  https://go.postman.co/workspace/E-l%C3%A4rande~7998ca2d-3d65-4019-99fb-775e68a101b9/collection/17526432-e7948ce3-aa25-48cd-96b2-5e748666584d?action=share&creator=21038370
+https://go.postman.co/workspace/E-l%C3%A4rande~7998ca2d-3d65-4019-99fb-775e68a101b9/collection/17526432-e7948ce3-aa25-48cd-96b2-5e748666584d?action=share&creator=21038370

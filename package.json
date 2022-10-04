@@ -11,7 +11,9 @@
     "prestart": "npm run build && func extensions install",
     "start:host": "func start",
     "start": "npm-run-all --parallel start:host watch",
-    "test": "jest"
+    "lint": "eslint **/*.ts",
+    "format": "prettier --check .",
+    "test": "npm lint && jest"
   },
   "description": "",
   "devDependencies": {
@@ -26,8 +28,11 @@
   },
   "dependencies": {
     "@kth/canvas-api": "^4.2.2",
+    "@kth/eslint-config-kth": "^3.0.10",
+    "eslint": "^8.24.0",
     "fast-csv": "^4.3.6",
     "fast-xml-parser": "^4.0.4",
-    "ldapts": "^3.2.2"
+    "ldapts": "^3.2.2",
+    "prettier": "^2.7.1"
   }
 }
