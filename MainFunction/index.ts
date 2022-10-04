@@ -1,3 +1,4 @@
+/* //eslint import/no-unresolved: off */
 import { AzureFunction, Context } from "@azure/functions";
 
 import { isRegistration, enrollRegisteredStudent } from "../RegisteredStudent";
