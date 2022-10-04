@@ -11,28 +11,23 @@ export function isRegistration(message: string): boolean {
 
   const ns0status = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
   if (ns0status !== "Active") return false;
+  const extension = membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"];
 
   return (
-    ladokExtensionFieldMatch(
-      membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
-      {
-        Admitted: true,
-        Registered: true,
-        Break: false,
-        Dropout: false,
-        OriginEvent: "LADOK.AddRegistration",
-      }
-    ) ||
-    ladokExtensionFieldMatch(
-      membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
-      {
-        Admitted: true,
-        Registered: true,
-        Break: false,
-        Dropout: false,
-        OriginEvent: "LADOK.AddReRegistration",
-      }
-    )
+    ladokExtensionFieldMatch(extension, {
+      Admitted: true,
+      Registered: true,
+      Break: false,
+      Dropout: false,
+      OriginEvent: "LADOK.AddRegistration",
+    }) ||
+    ladokExtensionFieldMatch(extension, {
+      Admitted: true,
+      Registered: true,
+      Break: false,
+      Dropout: false,
+      OriginEvent: "LADOK.AddReRegistration",
+    })
   );
 }
 
