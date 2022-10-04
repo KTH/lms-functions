@@ -7,6 +7,7 @@ export function ladokExtensionFieldMatch(
   for (const key of Object.keys(matchObj)) {
     let extensionField = extension?.["ns0:extensionField"];
 
+    // If there is only one extensionField in the message, the xml converter handles it as an object, but usually there are more then one and the converter converts it to an array. Make sure we always have an array.
     if (!Array.isArray(extensionField)) {
       extensionField = [extensionField];
     }
