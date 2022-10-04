@@ -66,63 +66,63 @@ export function isRegistration(message: string): boolean {
 }
 
 
-export async function _enrollRegisteredStudentActivityRound(
-  context: Context,
-  message: string 
-): Promise<{sisImportId: number}>{
-  const membership = getMembership(message)
-  const now = Date.now()
-  const filePath = path.join(temporalDirectory, `enrollment_${now}.csv`);
-  context.log('Writing enrollment to file', filePath)
+/* export async function _enrollRegisteredStudentActivityRound( */
+/*   context: Context, */
+/*   message: string */ 
+/* ): Promise<{sisImportId: number}>{ */
+/*   const membership = getMembership(message) */
+/*   const now = Date.now() */
+/*   const filePath = path.join(temporalDirectory, `enrollment_${now}.csv`); */
+/*   context.log('Writing enrollment to file', filePath) */
 
-  const writer = fs.createWriteStream(filePath);
-  const serializer = csv.format({ headers: true });
+/*   const writer = fs.createWriteStream(filePath); */
+/*   const serializer = csv.format({ headers: true }); */
 
-  // TODO: use new student role!
-  const registeredStudentRole = 164
-  const antagenRole = 25 
+/*   // TODO: use new student role! */
+/*   const registeredStudentRole = 164 */
+/*   const antagenRole = 25 */ 
 
-  const courseRoundId = membership?.["ns0:collectionSourcedId"];
-  const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
-  serializer.pipe(writer);
+/*   const courseRoundId = membership?.["ns0:collectionSourcedId"]; */
+/*   const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"]; */
+/*   serializer.pipe(writer); */
 
-  for await (const sectionId of [`AKT.${courseRoundId}`, `AKT.${courseRoundId}.FUNKA`]){
+/*   for await (const sectionId of [`AKT.${courseRoundId}`, `AKT.${courseRoundId}.FUNKA`]){ */
 
-    // add registered student
-    serializer.write({
-      section_id: sectionId, 
-      user_id: `user_integration_id:${studentId}`,
-      status: "active",
-      role_id: registeredStudentRole,
-    })
+/*     // add registered student */
+/*     serializer.write({ */
+/*       section_id: sectionId, */ 
+/*       user_integration_id: studentId, */
+/*       status: "active", */
+/*       role_id: registeredStudentRole, */
+/*     }) */
 
-    // remove admitted student
-    serializer.write({
-      section_id: sectionId,
-      user_id: `user_integration_id:${studentId}`,
-      status: "deleted",
-      role_id: antagenRole,
-    })
-  }
+/*     // remove admitted student */
+/*     serializer.write({ */
+/*       section_id: sectionId, */
+/*       user_integration_id: studentId, */
+/*       status: "deleted", */
+/*       role_id: antagenRole, */
+/*     }) */
+/*   } */
 
-  serializer.end();
+/*   serializer.end(); */
 
-  await new Promise((resolve, reject) => {
-    writer.on("finish", resolve);
-    writer.on("error", reject);
-  });
-  context.log('Sending enrollments ', filePath)
+/*   await new Promise((resolve, reject) => { */
+/*     writer.on("finish", resolve); */
+/*     writer.on("error", reject); */
+/*   }); */
+/*   context.log('Sending enrollments ', filePath) */
 
-  const { body } = await canvasApi.sendEnrollments(filePath) 
+/*   const { body } = await canvasApi.sendEnrollments(filePath) */ 
 
-  const url = new URL(
-    `/api/v1/accounts/1/sis_imports/${body.id}`,
-    process.env.CANVAS_API_URL
-  );
-  /* context.log(`Enrollments for ${groupName} sent to Canvas. Check ${url}`); */
+/*   const url = new URL( */
+/*     `/api/v1/accounts/1/sis_imports/${body.id}`, */
+/*     process.env.CANVAS_API_URL */
+/*   ); */
+/*   /1* context.log(`Enrollments for ${groupName} sent to Canvas. Check ${url}`); *1/ */
 
-  return { sisImportId: body.id };
-}
+/*   return { sisImportId: body.id }; */
+/* } */
 
 export async function enrollRegisteredStudent(
   context: Context,
@@ -147,7 +147,7 @@ export async function enrollRegisteredStudent(
   // add registered student
   serializer.write({
     section_id: courseRoundId, 
-    user_id: `user_integration_id:${studentId}`,
+    user_integration_id: studentId,
     status: "active",
     role_id: registeredStudentRole,
   })
@@ -155,7 +155,7 @@ export async function enrollRegisteredStudent(
   // remove admitted student
   serializer.write({
     section_id: courseRoundId,
-    user_id: `user_integration_id:${studentId}`,
+    user_integration_id: studentId,
     status: "deleted",
     role_id: antagenRole,
   })
