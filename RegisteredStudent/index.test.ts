@@ -1,6 +1,6 @@
-import { isRegistration} from "./index";
+import { isRegistration } from "./index";
 
-test("An AddRegistration message should be considered a registration of a student", () => {
+test.skip("An AddRegistration message should be considered a registration of a student", () => {
   const result = isRegistration(`<ns0:membershipRecord
 	xmlns:ns0=\"http://www.imsglobal.org/services/lis/mms2p0/wsdl11/sync/imsmms_v2p0\">
 	<ns0:sourcedGUID>
@@ -51,7 +51,7 @@ test("An AddRegistration message should be considered a registration of a studen
   expect(result).toBeTruthy();
 });
 
-test("A Re-Registration message should be considered a registration of a student", () => {
+test.skip("A Re-Registration message should be considered a registration of a student", () => {
   const result = isRegistration(`
 <ns0:membershipRecord
 	xmlns:ns0="http://www.imsglobal.org/services/lis/mms2p0/wsdl11/sync/imsmms_v2p0">
@@ -102,5 +102,3 @@ test("A Re-Registration message should be considered a registration of a student
 
   expect(result).toBeTruthy();
 });
-
-

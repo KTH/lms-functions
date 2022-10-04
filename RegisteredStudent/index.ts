@@ -1,22 +1,6 @@
 import { Context } from "@azure/functions";
 import * as canvasApi from "../canvasApi";
-import { getMembership } from "../utils";
-
-function ladokExtensionFieldMatch(
-  extension: object[],
-  matchObj: object
-): boolean {
-  for (const key of Object.keys(matchObj)) {
-    const field = extension?.["ns0:extensionField"].find(
-      (el) => el["ns0:fieldName"] === key
-    );
-    if (field["ns0:fieldValue"] !== matchObj[key]) {
-      return false;
-    }
-  }
-
-  return true;
-}
+import { getMembership, ladokExtensionFieldMatch } from "../utils";
 
 export function isRegistration(message: string): boolean {
   const membership = getMembership(message);

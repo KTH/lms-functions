@@ -1,16 +1,22 @@
 import { Context } from "@azure/functions";
 import * as canvasApi from "../canvasApi";
-import { getMembership } from "../utils";
+import { getMembership, ladokExtensionFieldMatch } from "../utils";
 
 const studentRole = 3;
 
 export function isRemoveActivityOccasionApplication(message: string): boolean {
   const membership = getMembership(message);
-  const extension =
-    membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.[
-      "ns0:extensionField"
-    ]?.["ns0:fieldValue"];
-  return extension === "LADOK.RemoveActivityOccasionApplication";
+  /* const extension = */
+  /*   membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.[ */
+  /*     "ns0:extensionField" */
+  /*   ]?.["ns0:fieldValue"]; */
+  /* return extension === "LADOK.RemoveActivityOccasionApplication"; */
+  return ladokExtensionFieldMatch(
+    membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
+    {
+      OriginEvent: "LADOK.RemoveActivityOccasionApplication",
+    }
+  );
 }
 
 export async function removeActivityEnrollment(
