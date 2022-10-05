@@ -2,7 +2,7 @@ import { isRegistration } from "./index";
 
 test("An AddRegistration message should be considered a registration of a student", () => {
   const result = isRegistration(`<ns0:membershipRecord
-	xmlns:ns0=\"http://www.imsglobal.org/services/lis/mms2p0/wsdl11/sync/imsmms_v2p0\">
+	xmlns:ns0="http://www.imsglobal.org/services/lis/mms2p0/wsdl11/sync/imsmms_v2p0">
 	<ns0:sourcedGUID>
 		<ns0:sourcedId>0035b991-953c-11ec-823c-971220ed4206</ns0:sourcedId>
 	</ns0:sourcedGUID>
