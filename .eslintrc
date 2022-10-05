@@ -8,8 +8,5 @@
         "extensions": [".js", ".ts"]
       }
     }
-  },
-  "rules": {
-    "import/no-unresolved": "off"
   }
 }
