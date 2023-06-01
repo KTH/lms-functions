@@ -1,13 +1,19 @@
 import type { Context } from "@azure/functions";
 import * as canvasApi from "../canvasApi";
-import { getMembership, ladokExtensionFieldMatch } from "../utils";
-
-const studentRole = 3;
+import {
+  ROLES,
+  StudentEnrollment,
+  getParsedMembership,
+  ladokExtensionFieldMatch,
+} from "../utils";
 
 export function isRemoveActivityOccasionApplication(message: string): boolean {
-  const membership = getMembership(message);
+  const membership = getParsedMembership(message);
+
+  if (!membership) return false;
+
   return ladokExtensionFieldMatch(
-    membership?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"],
+    membership["ns0:member"]["ns0:role"]["ns0:extension"]["ns0:extensionField"],
     {
       OriginEvent: "LADOK.RemoveActivityOccasionApplication",
     }
@@ -18,9 +24,13 @@ export async function removeActivityEnrollment(
   context: Context,
   message: string
 ): Promise<void> {
-  const membership = getMembership(message);
-  const activityRoundId = membership?.["ns0:collectionSourcedId"];
-  const studentId = membership?.["ns0:member"]?.["ns0:personSourcedId"];
+  const membership = getParsedMembership(message);
+
+  if (!membership) {
+    throw new Error("Could not parse membership");
+  }
+  const activityRoundId = membership["ns0:collectionSourcedId"];
+  const studentId = membership["ns0:member"]["ns0:personSourcedId"];
 
   if (!activityRoundId || !studentId) {
     context.log(
@@ -32,18 +42,18 @@ export async function removeActivityEnrollment(
     `Got message about student ${studentId} unrolled from exam ${activityRoundId}`
   );
 
-  const studentEnrollments = [
+  const studentEnrollments: StudentEnrollment[] = [
     {
       section_id: `AKT.${activityRoundId}`,
       user_integration_id: studentId,
       status: "deleted",
-      role_id: studentRole,
+      role_id: ROLES.STUDENT,
     },
     {
       section_id: `AKT.${activityRoundId}.FUNKA`,
       user_integration_id: studentId,
       status: "deleted",
-      role_id: studentRole,
+      role_id: ROLES.STUDENT,
     },
   ];
   await canvasApi.sendEnrollments(studentEnrollments, context);

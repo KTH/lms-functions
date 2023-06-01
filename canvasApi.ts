@@ -21,7 +21,7 @@ function getCanvasApi() {
     _canvasApi ||
     new CanvasApi(
       process.env.CANVAS_API_URL,
-      process.env.CANVAS_API_ADMIN_TOKEN
+      process.env.CANVAS_API_ADMIN_TOKEN!
     );
   return _canvasApi;
 }
@@ -51,7 +51,6 @@ export async function sendEnrollments(
   context: Context
 ) {
   const filePath = await createEnrollmentsFile(studentEnrollments);
-
   const { body } = await getCanvasApi().sisImport(filePath);
 
   const url = new URL(
