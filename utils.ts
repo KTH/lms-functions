@@ -37,7 +37,8 @@ export function isLadokExtensionField(
 
   return (
     typeof ladokExtension?.["ns0:fieldName"] === "string" &&
-    typeof ladokExtension?.["ns0:fieldType"] === "string"
+    typeof ladokExtension?.["ns0:fieldType"] === "string" &&
+    ladokExtension?.["ns0:fieldValue"] !== undefined
   );
 }
 
