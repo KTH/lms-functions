@@ -32,12 +32,14 @@ export function generateBoolExtField(name: string, value: boolean): string {
   return `<ns0:extensionField>
   <ns0:fieldName>${name}</ns0:fieldName>
   <ns0:fieldType>Boolean</ns0:fieldType>
-  <ns0:fieldValue>${value}</ns0:fieldValue>`;
+  <ns0:fieldValue>${value}</ns0:fieldValue>
+	</ns0:extensionField>`;
 }
 
 export function generateStrExtField(name: string, value: string): string {
   return `<ns0:extensionField>
-  <ns0:fieldName>${name}</ns0:fieldName>
-  <ns0:fieldType>string</ns0:fieldType>
-  <ns0:fieldValue>${value}</ns0:fieldValue>`;
+  	<ns0:fieldName>${name}</ns0:fieldName>
+  	<ns0:fieldType>string</ns0:fieldType>
+  	<ns0:fieldValue>${value}</ns0:fieldValue>
+	</ns0:extensionField>`;
 }

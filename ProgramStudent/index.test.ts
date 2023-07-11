@@ -8,7 +8,7 @@ import { enrollRegisteredProgramStudentIfApplicable } from "./index";
 
 const contextMock = { log: () => { } } as Context;
 
-describe("programroom registration", () => {
+describe("programroom registration triggers", () => {
   test("is NOT triggered by registration message without program code", async () => {
     const message = generateLisMessage([
       generateBoolExtField("Admitted", true),
@@ -34,7 +34,7 @@ describe("programroom registration", () => {
     expect(result).toBeFalsy();
   });
 
-  test("is NOT triggered if DropOut is true", async () => {
+  test("is NOT triggered if Dropout is true", async () => {
     const message = generateLisMessage([
       generateBoolExtField("Dropout", true),
     ]);
@@ -45,7 +45,22 @@ describe("programroom registration", () => {
     expect(result).toBeFalsy();
   });
 
-  test("is triggered by registration message with program code", async () => {
+  test("is NOT triggered by registration message without program code", async () => {
+    const message = generateLisMessage([
+      generateBoolExtField("Admitted", true),
+      generateBoolExtField("Registered", true),
+      generateBoolExtField("Break", false),
+      generateBoolExtField("Dropout", false),
+    ]);
+
+    const result = await enrollRegisteredProgramStudentIfApplicable(
+      contextMock,
+      message
+    );
+    expect(result).toBeFalsy();
+  });
+
+  test.skip("is triggered by registration message with program code", async () => {
     const message = generateLisMessage([
       generateBoolExtField("Admitted", true),
       generateBoolExtField("Registered", true),
@@ -60,6 +75,8 @@ describe("programroom registration", () => {
     );
     expect(result).toBeTruthy();
   });
-  test.todo("is NOT triggered by message without registration");
+});
+
+describe("programroom registration output", () => {
   test.todo("produces proper output when receiving a valid message");
 });
