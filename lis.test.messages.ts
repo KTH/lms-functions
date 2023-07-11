@@ -1,4 +1,5 @@
-export const registrationMessageWithoutProgramCode = `<ns0:membershipRecord
+function generateAddRegistrationMessage(extraFields: string[], roleType = 'Learner'): string {
+  return `<ns0:membershipRecord
 	xmlns:ns0="http://www.imsglobal.org/services/lis/mms2p0/wsdl11/sync/imsmms_v2p0">
 	<ns0:sourcedGUID>
 		<ns0:sourcedId>0035b991-953c-11ec-823c-971220ed4206</ns0:sourcedId>
@@ -9,31 +10,12 @@ export const registrationMessageWithoutProgramCode = `<ns0:membershipRecord
 		<ns0:member>
 			<ns0:personSourcedId>704b782e-b573-11e7-96e6-896ca17746d1</ns0:personSourcedId>
 			<ns0:role>
-				<ns0:roleType>Learner</ns0:roleType>
+				<ns0:roleType>${roleType}</ns0:roleType>
 				<ns0:status>Active</ns0:status>
 				<ns0:extension>
 					<ns0:extensionNameVocabulary>LocallyDefined</ns0:extensionNameVocabulary>
 					<ns0:extensionTypeVocabulary>http://www.imsglobal.org/lis/cmsv1p0/extensionvocabularyv1p0</ns0:extensionTypeVocabulary>
-					<ns0:extensionField>
-						<ns0:fieldName>Admitted</ns0:fieldName>
-						<ns0:fieldType>Boolean</ns0:fieldType>
-						<ns0:fieldValue>true</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>Registered</ns0:fieldName>
-						<ns0:fieldType>Boolean</ns0:fieldType>
-						<ns0:fieldValue>true</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>Break</ns0:fieldName>
-						<ns0:fieldType>Boolean</ns0:fieldType>
-						<ns0:fieldValue>false</ns0:fieldValue>
-					</ns0:extensionField>
-					<ns0:extensionField>
-						<ns0:fieldName>Dropout</ns0:fieldName>
-						<ns0:fieldType>Boolean</ns0:fieldType>
-						<ns0:fieldValue>false</ns0:fieldValue>
-					</ns0:extensionField>
+					${extraFields.join("\n")}
 					<ns0:extensionField>
 						<ns0:fieldName>OriginEvent</ns0:fieldName>
 						<ns0:fieldType>string</ns0:fieldType>
@@ -44,101 +26,34 @@ export const registrationMessageWithoutProgramCode = `<ns0:membershipRecord
 		</ns0:member>
 	</ns0:membership>
 </ns0:membershipRecord>`;
+}
 
-export const registrationMessageWithProgram = `
-<ns0:membershipRecord
-  xmlns:ns0="http://www.imsglobal.org/services/lis/mms2p0/wsdl11/sync/imsmms_v2p0">
-  <ns0:sourcedGUID>
-    <ns0:sourcedId>f6ea2aa8-0e4f-11ed-8f4d-87c157374df8d82f76e2-7d23-11ed-ba16-099432b5488e</ns0:sourcedId>
-  </ns0:sourcedGUID>
-  <ns0:membership>
-    <ns0:collectionSourcedId>d82f76e2-7d23-11ed-ba16-099432b5488e</ns0:collectionSourcedId>
-    <ns0:membershipIdType>courseOffering</ns0:membershipIdType>
-    <ns0:member>
-      <ns0:personSourcedId>anonymized</ns0:personSourcedId>
-      <ns0:role>
-        <ns0:roleType>Learner</ns0:roleType>
-        <ns0:timeFrame>
-          <ns0:begin></ns0:begin>
-          <ns0:end></ns0:end>
-        </ns0:timeFrame>
-        <ns0:status>Active</ns0:status>
-        <ns0:extension>
-          <ns0:extensionNameVocabulary>LocallyDefined</ns0:extensionNameVocabulary>
-          <ns0:extensionTypeVocabulary>http://www.imsglobal.org/lis/cmsv1p0/extensionvocabularyv1p0</ns0:extensionTypeVocabulary>
-          <ns0:extensionField>
-            <ns0:fieldName>Admitted</ns0:fieldName>
-            <ns0:fieldType>Boolean</ns0:fieldType>
-            <ns0:fieldValue>true</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>Registered</ns0:fieldName>
-            <ns0:fieldType>Boolean</ns0:fieldType>
-            <ns0:fieldValue>true</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>Break</ns0:fieldName>
-            <ns0:fieldType>Boolean</ns0:fieldType>
-            <ns0:fieldValue>false</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>Dropout</ns0:fieldName>
-            <ns0:fieldType>Boolean</ns0:fieldType>
-            <ns0:fieldValue>false</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>OriginEvent</ns0:fieldName>
-            <ns0:fieldType>string</ns0:fieldType>
-            <ns0:fieldValue>LADOK.AddRegistration</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>EarlyAccess</ns0:fieldName>
-            <ns0:fieldType>Boolean</ns0:fieldType>
-            <ns0:fieldValue>false</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>participation.program.code</ns0:fieldName>
-            <ns0:fieldType>string</ns0:fieldType>
-            <ns0:fieldValue>CDATE</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>education.is.root.packaging</ns0:fieldName>
-            <ns0:fieldType>Boolean</ns0:fieldType>
-            <ns0:fieldValue>false</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>education.is.latter.part</ns0:fieldName>
-            <ns0:fieldType>Boolean</ns0:fieldType>
-            <ns0:fieldValue>false</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>education.code</ns0:fieldName>
-            <ns0:fieldType>string</ns0:fieldType>
-            <ns0:fieldValue>SF1624</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>education.instance.code</ns0:fieldName>
-            <ns0:fieldType>string</ns0:fieldType>
-            <ns0:fieldValue>50075</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>education.uid</ns0:fieldName>
-            <ns0:fieldType>string</ns0:fieldType>
-            <ns0:fieldValue>7f276bd7-73d8-11e8-afa7-8e408e694e54</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>education.version.uid</ns0:fieldName>
-            <ns0:fieldType>string</ns0:fieldType>
-            <ns0:fieldValue>7f20dbb5-73d8-11e8-b4e0-063f9afb40e3</ns0:fieldValue>
-          </ns0:extensionField>
-          <ns0:extensionField>
-            <ns0:fieldName>education.type.id</ns0:fieldName>
-            <ns0:fieldType>string</ns0:fieldType>
-            <ns0:fieldValue>52</ns0:fieldValue>
-          </ns0:extensionField>
-        </ns0:extension>
-      </ns0:role>
-    </ns0:member>
-  </ns0:membership>
-</ns0:membershipRecord>
-`;
+function generateBoolExtField(name: string, value: boolean): string {
+  return `<ns0:extensionField>
+  <ns0:fieldName>${name}</ns0:fieldName>
+  <ns0:fieldType>Boolean</ns0:fieldType>
+  <ns0:fieldValue>${value}</ns0:fieldValue>`;
+}
+
+function generateStrExtField(name: string, value: string): string {
+  return `<ns0:extensionField>
+  <ns0:fieldName>${name}</ns0:fieldName>
+  <ns0:fieldType>string</ns0:fieldType>
+  <ns0:fieldValue>${value}</ns0:fieldValue>`;
+}
+
+
+export const registrationMessageWithoutProgramCode = generateAddRegistrationMessage([
+  generateBoolExtField("Admitted", true),
+  generateBoolExtField("Registered", true),
+  generateBoolExtField("Break", false),
+  generateBoolExtField("Dropout", false),
+]);
+
+export const registrationMessageWithProgram = generateAddRegistrationMessage([
+  generateBoolExtField("Admitted", true),
+  generateBoolExtField("Registered", true),
+  generateBoolExtField("Break", false),
+  generateBoolExtField("Dropout", false),
+  generateStrExtField("participation.program.code", "CDATE"),
+]);
