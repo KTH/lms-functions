@@ -1,4 +1,4 @@
-function generateAddRegistrationMessage(extraFields: string[], roleType = 'Learner'): string {
+export function generateMessage(extraFields: string[], roleType = 'Learner', eventType = 'LADOK.AddRegistration'): string {
   return `<ns0:membershipRecord
 	xmlns:ns0="http://www.imsglobal.org/services/lis/mms2p0/wsdl11/sync/imsmms_v2p0">
 	<ns0:sourcedGUID>
@@ -19,7 +19,7 @@ function generateAddRegistrationMessage(extraFields: string[], roleType = 'Learn
 					<ns0:extensionField>
 						<ns0:fieldName>OriginEvent</ns0:fieldName>
 						<ns0:fieldType>string</ns0:fieldType>
-						<ns0:fieldValue>LADOK.AddRegistration</ns0:fieldValue>
+						<ns0:fieldValue>${eventType}</ns0:fieldValue>
 					</ns0:extensionField>
 				</ns0:extension>
 			</ns0:role>
@@ -28,32 +28,16 @@ function generateAddRegistrationMessage(extraFields: string[], roleType = 'Learn
 </ns0:membershipRecord>`;
 }
 
-function generateBoolExtField(name: string, value: boolean): string {
+export function generateBoolExtField(name: string, value: boolean): string {
   return `<ns0:extensionField>
   <ns0:fieldName>${name}</ns0:fieldName>
   <ns0:fieldType>Boolean</ns0:fieldType>
   <ns0:fieldValue>${value}</ns0:fieldValue>`;
 }
 
-function generateStrExtField(name: string, value: string): string {
+export function generateStrExtField(name: string, value: string): string {
   return `<ns0:extensionField>
   <ns0:fieldName>${name}</ns0:fieldName>
   <ns0:fieldType>string</ns0:fieldType>
   <ns0:fieldValue>${value}</ns0:fieldValue>`;
 }
-
-
-export const registrationMessageWithoutProgramCode = generateAddRegistrationMessage([
-  generateBoolExtField("Admitted", true),
-  generateBoolExtField("Registered", true),
-  generateBoolExtField("Break", false),
-  generateBoolExtField("Dropout", false),
-]);
-
-export const registrationMessageWithProgram = generateAddRegistrationMessage([
-  generateBoolExtField("Admitted", true),
-  generateBoolExtField("Registered", true),
-  generateBoolExtField("Break", false),
-  generateBoolExtField("Dropout", false),
-  generateStrExtField("participation.program.code", "CDATE"),
-]);
