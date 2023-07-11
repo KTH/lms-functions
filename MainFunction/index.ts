@@ -7,7 +7,10 @@ import {
   removeActivityEnrollment,
 } from "../RemoveActivityOccasionApplication";
 
-async function tryRemoveActivityEnrollment(context: Context, message: string) {
+async function removeActivityEnrollmentIfApplicable(
+  context: Context,
+  message: string
+) {
   if (isRemoveActivityOccasionApplication(message)) {
     context.log("Handle remove activity application message");
     await removeActivityEnrollment(context, message);
@@ -18,7 +21,10 @@ async function tryRemoveActivityEnrollment(context: Context, message: string) {
   }
 }
 
-async function tryEnrollRegisteredStudent(context: Context, message: string) {
+async function enrollRegisteredStudentIfApplicable(
+  context: Context,
+  message: string
+) {
   if (isRegistration(message)) {
     context.log("Handle registration message");
     await enrollRegisteredStudent(context, message);
@@ -33,9 +39,9 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   context: Context,
   message: string
 ): Promise<void> {
-  const didA = await tryEnrollRegisteredStudent(context, message);
+  const didA = await enrollRegisteredStudentIfApplicable(context, message);
 
-  const didB = await tryRemoveActivityEnrollment(context, message);
+  const didB = await removeActivityEnrollmentIfApplicable(context, message);
 
   const didC = await tryEnrollRegisteredProgramStudent(context, message);
 
