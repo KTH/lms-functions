@@ -66,3 +66,17 @@ export async function enrollRegisteredStudent(
 
   return canvasApi.sendEnrollments(enrollments, context);
 }
+
+export async function enrollRegisteredStudentIfApplicable(
+  context: Context,
+  message: string
+) {
+  if (isRegistration(message)) {
+    context.log("Handle registration message");
+    await enrollRegisteredStudent(context, message);
+    context.log("Done handling registration message");
+    return true;
+  } else {
+    return false;
+  }
+}
