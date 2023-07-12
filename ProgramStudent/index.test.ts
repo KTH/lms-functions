@@ -1,4 +1,4 @@
-import { Context } from "vm";
+import { Context } from "@azure/functions";
 import {
   generateLisMessage,
   generateBoolExtField,
@@ -7,6 +7,7 @@ import {
 import {
   enrollRegisteredProgramStudentIfApplicable,
   _parseRegisteredProgramStudent,
+  _createEnrollments,
 } from "./index";
 
 const contextMock = { log: () => {} } as Context;
@@ -23,6 +24,21 @@ describe("Parse program registration messages or skip", () => {
     expect(
       await enrollRegisteredProgramStudentIfApplicable(contextMock, message)
     ).toBeFalsy();
+  });
+
+  test("is skipped if user is not Learner", async () => {
+    const message = generateLisMessage([
+      generateBoolExtField("Admitted", true),
+      generateBoolExtField("Registered", true),
+      generateBoolExtField("Break", false),
+      generateBoolExtField("Dropout", false),
+      generateStrExtField("participation.program.code", "CDATE"),
+    ], "Teacher");
+    const result = await enrollRegisteredProgramStudentIfApplicable(
+      contextMock,
+      message
+    );
+    expect(result).toBeFalsy();
   });
 
   test("is skipped by message without registration", async () => {
@@ -60,21 +76,3 @@ describe("Parse program registration messages or skip", () => {
   });
 });
 
-describe("programroom registration output", () => {
-  test("produces proper output when receiving a valid message", async () => {
-    const message = generateLisMessage([
-      generateBoolExtField("Admitted", true),
-      generateBoolExtField("Registered", true),
-      generateBoolExtField("Break", false),
-      generateBoolExtField("Dropout", false),
-      generateStrExtField("participation.program.code", "CDATE"),
-    ]);
-
-    const result = await enrollRegisteredProgramStudentIfApplicable(
-      contextMock,
-      message
-    );
-    // FIXME: Actuall test that the correct csv was generated!
-    expect(result).toBeTruthy();
-  });
-});

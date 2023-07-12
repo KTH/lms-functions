@@ -1,6 +1,7 @@
-import { Context } from "vm";
-import { getParsedMembership, ladokExtensionFieldMatch } from "../utils";
+import { Context } from "@azure/functions";
+import { ROLES, getParsedMembership, ladokExtensionFieldMatch } from "../utils";
 import { isRegistration } from "../RegisteredStudent";
+import * as canvasApi from "../canvasApi";
 
 export async function enrollRegisteredProgramStudentIfApplicable(
   context: Context,
@@ -11,7 +12,19 @@ export async function enrollRegisteredProgramStudentIfApplicable(
     return false;
   }
   const { studentId, programCode } = data;
-  enrollRegisteredProgramStudent(context, studentId, programCode);
+
+
+  const enrollments = [
+    {
+      section_id: `PROG.${programCode}`,
+      user_integration_id: studentId,
+      status: "active",
+      role_id: ROLES.REGISTERED,
+    }
+  ]
+
+  canvasApi.sendEnrollments(enrollments, context);
+  
   return true;
 }
 
@@ -26,6 +39,11 @@ export function _parseRegisteredProgramStudent(
 
   const memberships = getParsedMembership(message);
   if (!memberships) {
+    return undefined;
+  }
+
+  const isLearner = memberships["ns0:member"]["ns0:role"]["ns0:roleType"] === "Learner";
+  if (!isLearner) {
     return undefined;
   }
 
