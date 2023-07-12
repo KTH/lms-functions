@@ -14,7 +14,7 @@ interface LadokMembership {
 
   "ns0:member": {
     "ns0:role": {
-      "ns0:roleType"?: string,
+      "ns0:roleType"?: string;
       "ns0:status"?: string;
       "ns0:extension": {
         "ns0:extensionField": LadokExtensionField[];

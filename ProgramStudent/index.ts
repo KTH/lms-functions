@@ -13,18 +13,17 @@ export async function enrollRegisteredProgramStudentIfApplicable(
   }
   const { studentId, programCode } = data;
 
-
   const enrollments = [
     {
       section_id: `PROG.${programCode}`,
       user_integration_id: studentId,
       status: "active",
       role_id: ROLES.REGISTERED,
-    }
-  ]
+    },
+  ];
 
   canvasApi.sendEnrollments(enrollments, context);
-  
+
   return true;
 }
 
@@ -42,15 +41,13 @@ export function _parseRegisteredProgramStudent(
     return undefined;
   }
 
-  const isLearner = memberships["ns0:member"]["ns0:role"]["ns0:roleType"] === "Learner";
-  if (!isLearner) {
+  const role = memberships["ns0:member"]["ns0:role"];
+
+  if (role["ns0:roleType"] !== "Learner") {
     return undefined;
   }
 
-  const fields =
-    memberships["ns0:member"]["ns0:role"]["ns0:extension"][
-      "ns0:extensionField"
-    ];
+  const fields = role["ns0:extension"]["ns0:extensionField"];
   const registrationMatcher = {
     Admitted: true,
     Registered: true,

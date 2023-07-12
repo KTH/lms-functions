@@ -7,7 +7,6 @@ import {
 import {
   enrollRegisteredProgramStudentIfApplicable,
   _parseRegisteredProgramStudent,
-  _createEnrollments,
 } from "./index";
 
 const contextMock = { log: () => {} } as Context;
@@ -27,13 +26,16 @@ describe("Parse program registration messages or skip", () => {
   });
 
   test("is skipped if user is not Learner", async () => {
-    const message = generateLisMessage([
-      generateBoolExtField("Admitted", true),
-      generateBoolExtField("Registered", true),
-      generateBoolExtField("Break", false),
-      generateBoolExtField("Dropout", false),
-      generateStrExtField("participation.program.code", "CDATE"),
-    ], "Teacher");
+    const message = generateLisMessage(
+      [
+        generateBoolExtField("Admitted", true),
+        generateBoolExtField("Registered", true),
+        generateBoolExtField("Break", false),
+        generateBoolExtField("Dropout", false),
+        generateStrExtField("participation.program.code", "CDATE"),
+      ],
+      "Teacher"
+    );
     const result = await enrollRegisteredProgramStudentIfApplicable(
       contextMock,
       message
@@ -75,4 +77,3 @@ describe("Parse program registration messages or skip", () => {
     });
   });
 });
-
