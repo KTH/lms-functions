@@ -17,6 +17,7 @@ export async function enrollRegisteredProgramStudentIfApplicable(
 
   const memberships = getParsedMembership(message);
   if (!memberships) {
+    // Incomplete message
     throw new Error("Could not parse membership");
   }
 
@@ -32,9 +33,16 @@ export async function enrollRegisteredProgramStudentIfApplicable(
   };
 
   if (!ladokExtensionFieldMatch(fields, registrationMatcher)) {
+    // This message is not about a registration, therefor it is not about program room enrollments
     return false;
   }
 
+  if (true) {
+    // This message does not contain a program code
+    return false;
+  }
+
+  // The message is about a program registration, enroll student in program room
   enrollRegisteredProgramStudent(context, message);
   return true;
 }

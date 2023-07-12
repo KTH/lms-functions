@@ -9,7 +9,7 @@ import { enrollRegisteredProgramStudentIfApplicable } from "./index";
 const contextMock = { log: () => {} } as Context;
 
 describe("programroom registration triggers", () => {
-  test("is NOT triggered by registration message without program code", async () => {
+  test.only("is NOT triggered by registration message without program code", async () => {
     const message = generateLisMessage([
       generateBoolExtField("Admitted", true),
       generateBoolExtField("Registered", true),
@@ -40,7 +40,7 @@ describe("programroom registration triggers", () => {
     expect(result).toBeFalsy();
   });
 
-  test.skip("is triggered by registration message with program code", async () => {
+  test("is triggered by registration message with program code", async () => {
     const message = generateLisMessage([
       generateBoolExtField("Admitted", true),
       generateBoolExtField("Registered", true),
