@@ -1,4 +1,8 @@
-export function generateLisMessage(extraFields: string[], roleType = 'Learner', eventType = 'LADOK.AddRegistration'): string {
+export function generateLisMessage(
+  extraFields: string[],
+  roleType = "Learner",
+  eventType = "LADOK.AddRegistration"
+): string {
   return `<ns0:membershipRecord
 	xmlns:ns0="http://www.imsglobal.org/services/lis/mms2p0/wsdl11/sync/imsmms_v2p0">
 	<ns0:sourcedGUID>

@@ -2,22 +2,31 @@ import { Context } from "vm";
 import { getParsedMembership, ladokExtensionFieldMatch } from "../utils";
 import { isRegistration } from "../RegisteredStudent";
 
-export function enrollRegisteredProgramStudent(
-  context: Context,
-  message: string
-) {}
-
 export async function enrollRegisteredProgramStudentIfApplicable(
   context: Context,
   message: string
 ): Promise<boolean> {
+  const data = _parseRegisteredProgramStudent(context, message);
+  if (!data) {
+    return false;
+  }
+  const { studentId, programCode } = data;
+  enrollRegisteredProgramStudent(context, studentId, programCode);
+  return true;
+}
+
+// Only exported for testability
+export function _parseRegisteredProgramStudent(
+  context: Context,
+  message: string
+): { studentId: string; programCode: string } | undefined {
   context;
 
-  if (!isRegistration(message)) return false;
+  if (!isRegistration(message)) return undefined;
 
   const memberships = getParsedMembership(message);
   if (!memberships) {
-    return false;
+    return undefined;
   }
 
   const fields =
@@ -33,15 +42,23 @@ export async function enrollRegisteredProgramStudentIfApplicable(
 
   if (!ladokExtensionFieldMatch(fields, registrationMatcher)) {
     // This message is not about a registration, therefor it is not about program room enrollments
-    return false;
+    return undefined;
   }
 
-  if (true) {
-    // This message does not contain a program code
-    return false;
-  }
+  // console.log(JSON.stringify(memberships, null, 2));
 
-  // The message is about a program registration, enroll student in program room
-  enrollRegisteredProgramStudent(context, message);
-  return true;
+  const programCode = fields.find(
+    (f) => f["ns0:fieldName"] === "participation.program.code"
+  )?.["ns0:fieldValue"];
+  const studentId = memberships["ns0:member"]["ns0:personSourcedId"];
+  if (!programCode || !studentId) {
+    return undefined;
+  }
+  return { studentId, programCode };
 }
+
+export function enrollRegisteredProgramStudent(
+  context: Context,
+  studentId: string,
+  programCode: string
+) {}
