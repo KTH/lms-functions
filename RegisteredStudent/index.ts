@@ -7,6 +7,7 @@ import {
   ladokExtensionFieldMatch,
 } from "../utils";
 
+// TODO: This is shared by ProgramStudent/index.ts and RegisteredStudent/index.ts
 export function isRegistration(message: string): boolean {
   const membership = getParsedMembership(message);
   if (!membership) return false;
