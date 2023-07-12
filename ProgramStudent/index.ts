@@ -17,8 +17,7 @@ export async function enrollRegisteredProgramStudentIfApplicable(
 
   const memberships = getParsedMembership(message);
   if (!memberships) {
-    // Incomplete message
-    throw new Error("Could not parse membership");
+    return false;
   }
 
   const fields =
