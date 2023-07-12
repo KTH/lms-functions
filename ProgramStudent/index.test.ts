@@ -3,10 +3,10 @@ import {
   generateLisMessage,
   generateBoolExtField,
   generateStrExtField,
-} from "../lis.test.utils";
+} from "../__test__/lis.test.utils";
 import { enrollRegisteredProgramStudentIfApplicable } from "./index";
 
-const contextMock = { log: () => { } } as Context;
+const contextMock = { log: () => {} } as Context;
 
 describe("programroom registration triggers", () => {
   test("is NOT triggered by registration message without program code", async () => {
@@ -18,10 +18,7 @@ describe("programroom registration triggers", () => {
     ]);
 
     expect(
-      await enrollRegisteredProgramStudentIfApplicable(
-        contextMock,
-        message
-      )
+      await enrollRegisteredProgramStudentIfApplicable(contextMock, message)
     ).toBeFalsy();
   });
 
@@ -35,24 +32,7 @@ describe("programroom registration triggers", () => {
   });
 
   test("is NOT triggered if Dropout is true", async () => {
-    const message = generateLisMessage([
-      generateBoolExtField("Dropout", true),
-    ]);
-    const result = await enrollRegisteredProgramStudentIfApplicable(
-      contextMock,
-      message
-    );
-    expect(result).toBeFalsy();
-  });
-
-  test("is NOT triggered by registration message without program code", async () => {
-    const message = generateLisMessage([
-      generateBoolExtField("Admitted", true),
-      generateBoolExtField("Registered", true),
-      generateBoolExtField("Break", false),
-      generateBoolExtField("Dropout", false),
-    ]);
-
+    const message = generateLisMessage([generateBoolExtField("Dropout", true)]);
     const result = await enrollRegisteredProgramStudentIfApplicable(
       contextMock,
       message
@@ -80,3 +60,4 @@ describe("programroom registration triggers", () => {
 describe("programroom registration output", () => {
   test.todo("produces proper output when receiving a valid message");
 });
+
