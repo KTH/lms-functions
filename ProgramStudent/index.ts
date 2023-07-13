@@ -22,7 +22,7 @@ export async function enrollRegisteredProgramStudentIfApplicable(
     },
   ];
 
-  canvasApi.sendEnrollments(enrollments, context);
+  await canvasApi.sendEnrollments(enrollments, context);
 
   return true;
 }
