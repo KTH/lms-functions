@@ -14,6 +14,7 @@ interface LadokMembership {
 
   "ns0:member": {
     "ns0:role": {
+      "ns0:roleType"?: string;
       "ns0:status"?: string;
       "ns0:extension": {
         "ns0:extensionField": LadokExtensionField[];
@@ -89,6 +90,7 @@ export function getParsedMembership(message: string): LadokMembership | null {
     return null;
   }
 
+  const roleType = unparsed?.["ns0:member"]?.["ns0:role"]?.["ns0:roleType"];
   const status = unparsed?.["ns0:member"]?.["ns0:role"]?.["ns0:status"];
   const extensionFields = parseExtensionFields(
     unparsed?.["ns0:member"]?.["ns0:role"]?.["ns0:extension"]?.[
@@ -106,6 +108,7 @@ export function getParsedMembership(message: string): LadokMembership | null {
     "ns0:membershipIdType": unparsed["ns0:membershipIdType"],
     "ns0:member": {
       "ns0:role": {
+        "ns0:roleType": roleType,
         "ns0:status": status,
         "ns0:extension": {
           "ns0:extensionField": extensionFields,
