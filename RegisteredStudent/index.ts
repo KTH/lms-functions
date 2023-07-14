@@ -73,9 +73,9 @@ export async function enrollRegisteredStudentIfApplicable(
   message: string
 ) {
   if (isRegistration(message)) {
-    context.log("Handle registration message");
+    context.log.info("Handle registration message");
     await enrollRegisteredStudent(context, message);
-    context.log("Done handling registration message");
+    context.log.verbose("Done handling registration message");
     return true;
   } else {
     return false;

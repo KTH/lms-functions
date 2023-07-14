@@ -11,6 +11,7 @@ export async function enrollRegisteredProgramStudentIfApplicable(
   if (!data) {
     return false;
   }
+  context.log.info("Handle program registration message");
   const { studentId, programCode } = data;
 
   const enrollments = [

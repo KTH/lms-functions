@@ -17,7 +17,7 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   );
 
   if (!didA && !didB && !didC) {
-    context.log("Message is not relevant. Skipping...");
+    context.log.verbose("Message is not relevant. Skipping...");
   }
 };
 
