@@ -38,8 +38,8 @@ export async function removeActivityEnrollment(
     );
     return;
   }
-  context.log.verbose(
-    `Got message about student ${studentId} unrolled from exam ${activityRoundId}`
+  context.log.info(
+    `Unenrolling student ${studentId} from exam ${activityRoundId}`
   );
 
   const studentEnrollments: StudentEnrollment[] = [

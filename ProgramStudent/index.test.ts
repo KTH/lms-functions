@@ -9,7 +9,7 @@ import {
   _parseRegisteredProgramStudent,
 } from "./index";
 
-const contextMock = { log: () => {} } as Context;
+const contextMock = { log: { verbose: () => {}, info: () => {} } } as Context;
 
 describe("Parse program registration messages or skip", () => {
   test("is skipped by registration message without program code", async () => {

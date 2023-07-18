@@ -11,8 +11,8 @@ export async function enrollRegisteredProgramStudentIfApplicable(
   if (!data) {
     return false;
   }
-  context.log.info("Handle program registration message");
   const { studentId, programCode } = data;
+  context.log.info(`Enroll ${studentId} to program room ${programCode}`);
 
   const enrollments = [
     {
@@ -22,7 +22,6 @@ export async function enrollRegisteredProgramStudentIfApplicable(
       role_id: ROLES.REGISTERED,
     },
   ];
-
   await canvasApi.sendEnrollments(enrollments, context);
 
   return true;
@@ -39,12 +38,14 @@ export function _parseRegisteredProgramStudent(
 
   const memberships = getParsedMembership(message);
   if (!memberships) {
+    context.log.warn("Failed to parse memberships for registration message.");
     return undefined;
   }
 
   const role = memberships["ns0:member"]["ns0:role"];
 
   if (role["ns0:roleType"] !== "Learner") {
+    context.log.verbose(`Role is ${role["ns0:roleType"]}, not "Learner"`);
     return undefined;
   }
 
@@ -57,17 +58,16 @@ export function _parseRegisteredProgramStudent(
   };
 
   if (!ladokExtensionFieldMatch(fields, registrationMatcher)) {
-    // This message is not about a registration, therefor it is not about program room enrollments
+    context.log.verbose("Message is not about a registration");
     return undefined;
   }
-
-  // console.log(JSON.stringify(memberships, null, 2));
 
   const programCode = fields.find(
     (f) => f["ns0:fieldName"] === "participation.program.code"
   )?.["ns0:fieldValue"];
   const studentId = memberships["ns0:member"]["ns0:personSourcedId"];
   if (!programCode || !studentId) {
+    context.log.verbose("No student id or no programcode in message");
     return undefined;
   }
   return { studentId, programCode };

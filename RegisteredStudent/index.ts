@@ -50,6 +50,9 @@ export async function enrollRegisteredStudent(
 
   const courseRoundId = membership["ns0:collectionSourcedId"];
   const studentId = membership["ns0:member"]["ns0:personSourcedId"];
+  context.log.info(
+    `Enroll ${studentId} to course room ${courseRoundId} as registered`
+  );
   const enrollments: StudentEnrollment[] = [
     {
       section_id: courseRoundId,
@@ -73,7 +76,7 @@ export async function enrollRegisteredStudentIfApplicable(
   message: string
 ) {
   if (isRegistration(message)) {
-    context.log.info("Handle registration message");
+    context.log.verbose("Handle registration message");
     await enrollRegisteredStudent(context, message);
     context.log.verbose("Done handling registration message");
     return true;
