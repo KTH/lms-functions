@@ -57,7 +57,7 @@ export async function sendEnrollments(
     `/api/v1/accounts/1/sis_imports/${body.id}`,
     process.env.CANVAS_API_URL
   );
-  context.log(`Enrollments sent to Canvas. Check ${url}`);
+  context.log.info(`Enrollments sent to Canvas. Check ${url}`);
 
   return { sisImportId: body.id };
 }

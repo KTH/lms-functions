@@ -33,13 +33,13 @@ export async function removeActivityEnrollment(
   const studentId = membership["ns0:member"]["ns0:personSourcedId"];
 
   if (!activityRoundId || !studentId) {
-    context.log(
+    context.log.verbose(
       "Skipping! This message is missing 'activityRoundId' or 'studentId', so it isn't a message we can process."
     );
     return;
   }
-  context.log(
-    `Got message about student ${studentId} unrolled from exam ${activityRoundId}`
+  context.log.info(
+    `Unenrolling student ${studentId} from exam ${activityRoundId}`
   );
 
   const studentEnrollments: StudentEnrollment[] = [
@@ -58,7 +58,7 @@ export async function removeActivityEnrollment(
   ];
   await canvasApi.sendEnrollments(studentEnrollments, context);
 
-  context.log(
+  context.log.verbose(
     `Removed enrollment of user ${studentId} from exam ${activityRoundId}`
   );
 }
@@ -68,9 +68,9 @@ export async function removeActivityEnrollmentIfApplicable(
   message: string
 ) {
   if (isRemoveActivityOccasionApplication(message)) {
-    context.log("Handle remove activity application message");
+    context.log.info("Handle remove activity application message");
     await removeActivityEnrollment(context, message);
-    context.log("Done handling remove activity application message");
+    context.log.verbose("Done handling remove activity application message");
     return true;
   } else {
     return false;

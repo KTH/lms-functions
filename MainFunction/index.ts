@@ -7,17 +7,26 @@ const serviceBusTopicTrigger: AzureFunction = async function (
   context: Context,
   message: string
 ): Promise<void> {
-  const didA = await enrollRegisteredStudentIfApplicable(context, message);
+  try {
+    context.log.verbose("Message is", message);
 
-  const didB = await removeActivityEnrollmentIfApplicable(context, message);
+    const didA = await enrollRegisteredStudentIfApplicable(context, message);
 
-  const didC = await enrollRegisteredProgramStudentIfApplicable(
-    context,
-    message
-  );
+    const didB = await removeActivityEnrollmentIfApplicable(context, message);
 
-  if (!didA && !didB && !didC) {
-    context.log("Message is not relevant. Skipping...");
+    const didC = await enrollRegisteredProgramStudentIfApplicable(
+      context,
+      message
+    );
+
+    if (!didA && !didB && !didC) {
+      context.log.verbose("Message is not relevant. Skipping...");
+    }
+  } catch (e) {
+    // Note: Azure functions will retry on exception, but we're not
+    // sure it will log properly, so we log the error just in case.
+    context.log.error(e);
+    throw e;
   }
 };
 
