@@ -7,6 +7,7 @@ import {
   ladokExtensionFieldMatch,
 } from "../utils";
 
+// TODO: This is shared by ProgramStudent/index.ts and RegisteredStudent/index.ts
 export function isRegistration(message: string): boolean {
   const membership = getParsedMembership(message);
   if (!membership) return false;
@@ -65,4 +66,18 @@ export async function enrollRegisteredStudent(
   ];
 
   return canvasApi.sendEnrollments(enrollments, context);
+}
+
+export async function enrollRegisteredStudentIfApplicable(
+  context: Context,
+  message: string
+) {
+  if (isRegistration(message)) {
+    context.log("Handle registration message");
+    await enrollRegisteredStudent(context, message);
+    context.log("Done handling registration message");
+    return true;
+  } else {
+    return false;
+  }
 }

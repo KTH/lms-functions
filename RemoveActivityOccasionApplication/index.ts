@@ -62,3 +62,17 @@ export async function removeActivityEnrollment(
     `Removed enrollment of user ${studentId} from exam ${activityRoundId}`
   );
 }
+
+export async function removeActivityEnrollmentIfApplicable(
+  context: Context,
+  message: string
+) {
+  if (isRemoveActivityOccasionApplication(message)) {
+    context.log("Handle remove activity application message");
+    await removeActivityEnrollment(context, message);
+    context.log("Done handling remove activity application message");
+    return true;
+  } else {
+    return false;
+  }
+}

@@ -1,32 +1,24 @@
 import type { AzureFunction, Context } from "@azure/functions";
-
-import { isRegistration, enrollRegisteredStudent } from "../RegisteredStudent";
-import {
-  isRemoveActivityOccasionApplication,
-  removeActivityEnrollment,
-} from "../RemoveActivityOccasionApplication";
+import { enrollRegisteredProgramStudentIfApplicable } from "../ProgramStudent";
+import { enrollRegisteredStudentIfApplicable } from "../RegisteredStudent";
+import { removeActivityEnrollmentIfApplicable } from "../RemoveActivityOccasionApplication";
 
 const serviceBusTopicTrigger: AzureFunction = async function (
   context: Context,
   message: string
 ): Promise<void> {
-  context.log("Message is", message);
+  const didA = await enrollRegisteredStudentIfApplicable(context, message);
 
-  if (isRegistration(message)) {
-    context.log("Handle registration message");
-    await enrollRegisteredStudent(context, message);
-    context.log("Done handling registration message");
-    return;
+  const didB = await removeActivityEnrollmentIfApplicable(context, message);
+
+  const didC = await enrollRegisteredProgramStudentIfApplicable(
+    context,
+    message
+  );
+
+  if (!didA && !didB && !didC) {
+    context.log("Message is not relevant. Skipping...");
   }
-
-  if (isRemoveActivityOccasionApplication(message)) {
-    context.log("Handle remove activity application message");
-    await removeActivityEnrollment(context, message);
-    context.log("Done handling remove activity application message");
-    return;
-  }
-
-  context.log("Message is not relevant. Skipping...");
 };
 
 export default serviceBusTopicTrigger;

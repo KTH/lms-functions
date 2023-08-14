@@ -50,4 +50,3 @@ https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=
 
 Trigger non-HTTP functions during development
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#non-http-triggered-functions
-
