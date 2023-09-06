@@ -61,10 +61,12 @@ export function ladokExtensionFieldMatch(
 
   return true;
 }
-
-export function getMembership(message: string): unknown {
+export function getParsedMessage(message: string): any {
   const parser = new XMLParser();
-  const jsonObj = parser.parse(message);
+  return parser.parse(message);
+}
+export function getMembership(message: string): unknown {
+  const jsonObj = getParsedMessage(message);
   return jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"];
 }
 
@@ -81,8 +83,7 @@ function parseExtensionFields(obj: unknown): LadokExtensionField[] {
 }
 
 export function getParsedMembership(message: string): LadokMembership | null {
-  const parser = new XMLParser();
-  const jsonObj = parser.parse(message);
+  const jsonObj = getParsedMessage(message);
 
   const unparsed = jsonObj?.["ns0:membershipRecord"]?.["ns0:membership"];
 
