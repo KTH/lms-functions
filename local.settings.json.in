@@ -4,9 +4,7 @@
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "SERVICE_BUS_SUBSCRIPTION_NAME": "[subscription name. e.g. lms-carlos]",
     "SERVICE_BUS_CONNECTION_STRING": "[connection string]",
-
     "CANVAS_API_URL": "",
-    "CANVAS_API_ADMIN_TOKEN": "",
-    "AzureWebJobsStorage": ""
+    "CANVAS_API_ADMIN_TOKEN": ""
   }
 }
