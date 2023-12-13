@@ -4,7 +4,7 @@
       "name": "mySbMsg",
       "type": "serviceBusTrigger",
       "direction": "in",
-      "topicName": "ladok-lis",
+      "topicName": "ladok-lis-elarande",
       "subscriptionName": "%SERVICE_BUS_SUBSCRIPTION_NAME%",
       "connection": "SERVICE_BUS_CONNECTION_STRING"
     }
